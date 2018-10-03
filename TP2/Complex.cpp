@@ -29,6 +29,11 @@ Complex::Complex( const Complex & other)
 	std::cout << "this <= " << this << "\t other <= " << &other << std::endl;
 }
 
+Complex::~Complex()
+{
+	std::cout << "---Complex(" << this->getReal() << ", i*" << this->getImaginary() << ")" << std::endl;
+}
+
 double Complex::getImaginary()
 {
 	return this->im;	
@@ -88,7 +93,7 @@ Complex product( Complex arg1, Complex arg2 )
 {
 	double im, re;
 	im = (arg1.getImaginary() * arg2.getReal()) + (arg2.getImaginary() * arg1.getReal());
-	re = (arg1.getImaginary() * arg2.getImaginary()) - (arg2.getReal() * arg1.getReal());
+	re = - (arg1.getImaginary() * arg2.getImaginary()) + (arg2.getReal() * arg1.getReal());
 	Complex result(re, im);
 	return result;
 }
@@ -153,18 +158,41 @@ Complex Complex::operator*(const double & re)
 	return *this;
 }
 
-Complex normalized( Complexe complexe )
+Complex normalized( Complex & complexe )
 {
-	Complex norm;
-	//TODO
+	double im, re, mod;
+	mod = sqrt(pow(complexe.getImaginary(), 2) + pow(complexe.getReal(), 2));
+	im = complexe.getImaginary() / mod;
+	re = complexe.getReal() / mod;
+	Complex norm(re, im);
+	return norm;
 }
 
-Complex rotate( Complexe complexe, double angle )
+Complex eitheta (double theta)
 {
-	//TODO
+	Complex res(round(cos(theta) * 1000.0) / 1000.0, sin(theta));
+	res.show();
+	return res;
 }
 
-Complex biggestModule( Complexe arg1, Complexe arg2 )
+void rotate( Complex & complexe, double angle )
 {
-	//TODO
+	complexe = complexe * eitheta(angle);
+}
+
+Complex & biggestModule( Complex &arg1, Complex &arg2 )
+{
+	if(arg1.getModule() > arg2.getModule())
+		return arg1;
+	return arg2;
+}
+
+void racines( int n, Complex tableau[], int size )
+{
+	if (n > size)
+	{
+		std::cout << "n must be bigger than size\n";
+		return;
+	}
+	
 }

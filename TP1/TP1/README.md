@@ -1,2 +1,0 @@
-# Cpp
-TPs de Cpp

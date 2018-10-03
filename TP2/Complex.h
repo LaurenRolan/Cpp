@@ -37,8 +37,7 @@ Complex sum( Complex arg1, Complex arg2 );
 Complex difference( Complex arg1, Complex arg2 );
 Complex product( Complex arg1, Complex arg2 );
 
-Complex normalized( Complexe complexe );
-Complex rotate( Complexe complexe, double angle );
-Complex normalized( Complexe arg1, Complexe arg2 );
-
-
+Complex normalized( Complex & complexe );
+void rotate( Complex & complexe, double angle );
+Complex & biggestModule( Complex &arg1, Complex &arg2 );
+void racines( int n, Complex tableau[], int size );
