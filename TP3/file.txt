@@ -1,9 +1,0 @@
-.
-./main.cpp
-./file.txt
-./files.txt
-./#Matrix.cpp#
-./Matrix.h
-./filext.txt
-./Makefile
-./Matrix.cpp
