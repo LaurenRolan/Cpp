@@ -1,85 +1,115 @@
-/* Author: Lauren Sampaio
+ /* Author: Lauren Sampaio
  * File: Matrix.cpp
  */
 #include "Matrix.h"
 #include <cmath>
 #include <cstring>
 #include <iostream>
+using namespace std;
 
+//Dummy functions
+void Matrix::show()
+{
+	for(int l = 0; l < _lines; l++)
+	{
+		cout << "[ ";
+		for(int c = 0; c < _cols; c++)
+			cout << _data[l * _cols + c] << " ";
+		cout << "]\n";
+	}
+}
+
+void Matrix::fillWith(int value)
+{
+	for(int l = 0; l < _lines; l++)
+		for(int c = 0; c < _cols; c++)
+			_data[l * _cols + c] = value;
+}
+
+void Matrix::fillOrder()
+{
+	for(int l = 0; l < _lines; l++)
+		for(int c = 0; c < _cols; c++)
+			_data[l * _cols + c] = l * _cols + c;
+}
+
+//Main functions
 Matrix::Matrix()
 {
-	std::cout << "+++Matrix()" << std::endl;
-	this->lines = 0;
-	this->cols = 0;
-	this->data = nullptr;
+	cout << "+++Matrix()" << endl;
+	_lines = 0;
+	_cols = 0;
+	_data = nullptr;
 }
 
 
 Matrix::Matrix( int lines, int cols )
 {
-	this->lines = lines;
-	this->cols = cols;
-	this->data = (double*) malloc(sizeof(double) * (lines * cols)); 	
-	std::cout << "+++Matrix(" << lines << ", " << cols << ")" << std::endl;
-	std::cout << "\tthis <= " << this << "\t lines <= " << &lines << "\t cols <= " << &cols << std::endl;	
+	_lines = lines;
+	_cols = cols;
+	_data = new double[ lines * cols]; 	
+	cout << "+++Matrix(" << _lines << ", " << _cols << ")" << endl;
+	cout << "\tthis <= " << this << "\t lines <= " << &_lines << "\t cols <= " << &cols << endl;	
 }
 
 Matrix::Matrix( const Matrix & other)
 {
-	this->lines = other.lines;
-	this->cols = other.cols;
-	if(other.data)
-		memcpy(this->data, other.data, sizeof(double) * other.lines * other.cols);
+	_lines = other._lines;
+	_cols = other._cols;
+	_data = new double[ _lines * _cols]; 
+	if(other._data)
+		memcpy(_data, other._data, sizeof(double) * other._lines * other._cols);
 	else
-		this->data = nullptr;
-	std::cout << "rrrMatrix(" << this->lines << ", " << this->cols << ")" << std::endl;
-	std::cout << "\tthis <= " << this << "\t other <= " << &other << std::endl;
+		_data = nullptr;
+	cout << "rrrMatrix(" << _lines << ", " << _cols << ")" << endl;
+	cout << "\tthis <= " << this << "\t other <= " << &other << endl;
 }
 
 Matrix::Matrix( Matrix && other)
 {
-	this->lines = other.lines;
-	this->cols = other.cols;
-	memcpy(this->data, other.data, lines * cols);
-	other.data = nullptr;
-	std::cout << "dddMatrix(" << this->lines << ", " << this->cols << ")" << std::endl;
-	std::cout << "\tthis <= " << this << "\t other <= " << &other << std::endl;
+	_lines = other._lines;
+	_cols = other._cols;
+	// Copeir le pointeur de other
+	_data = other._data;
+	other._lines = 0;
+	other._cols = 0;
+	other._data = nullptr;
+	cout << "dddMatrix(" << _lines << ", " << _cols << ")" << endl;
+	cout << "\tthis <= " << this << "\t other <= " << &other << endl;
 }
 
 Matrix::~Matrix()
 {
-	std::cout << "---Matrix(" << this->lines << ", " << this->cols << ")" << std::endl;
-	if(this->data)
-		delete[] this->data;
+	cout << "---Matrix(" << _lines << ", " << _cols << ")" << endl;
+	delete[] _data;
 }
 
-int Matrix::getLines() { return this->lines; }
+int Matrix::getLines() { return _lines; }
 
-int Matrix::getCols() { return this->cols; }
+int Matrix::getCols() { return _cols; }
 
 
 Matrix & Matrix::operator=(const Matrix & other)
 {
-	std::cout << "Lerreur est ici\n";
 	if ( this == &other )
 	{
-		std::cout << "op=Matrix(" << this->lines << ", " << this->cols << ")" << std::endl;
-		std::cout << "\tthis <= " << this << "\t other <= " << &other << std::endl;
+		cout << "op=Matrix(" << _lines << ", " << _cols << ")" << endl;
+		cout << "\tthis <= " << this << "\t other <= " << &other << endl;
 		return *this;
 	}
 	else
 	{
-		std::cout << "Lerreur est ici\n";
-		delete[] this->data;
-		this->lines = other.lines;
-		this->cols = other.cols;
-		if(other.data)
-			memcpy(this->data, other.data, sizeof(double) * other.lines * other.cols);
+		delete[] _data;
+		_lines = other._lines;
+		_cols = other._cols;
+		_data = new double[ _lines * _cols]; 
+		if(other._data)
+			memcpy(_data, other._data, sizeof(double) * other._lines * other._cols);
 		else
-			this->data = nullptr;
+			_data = nullptr;
 	}
-	std::cout << "op=Matrix(" << this->lines << ", " << this->cols << ")" << std::endl;
-	std::cout << "\tthis <= " << this << "\t other <= " << &other << std::endl;
+	cout << "op=Matrix(" << _lines << ", " << _cols << ")" << endl;
+	cout << "\tthis <= " << this << "\t other <= " << &other << endl;
 	return *this;
 }
 
@@ -88,59 +118,60 @@ Matrix & Matrix::operator=( Matrix && other)
 {
 	if ( this == &other )
 	{
-		std::cout << "op=Matrix(" << this->lines << ", " << this->cols << ")" << std::endl;
-		std::cout << "\tthis <= " << this << "\t other <= " << &other << std::endl;
+		cout << "ro=Matrix(" << _lines << ", " << _cols << ")" << endl;
+		cout << "\tthis <= " << this << "\t other <= " << &other << endl;
 		return *this;
 	}
 	else
 	{
-		this->lines = other.lines;
-		this->cols = other.cols;
-		this->data = std::move(other.data);
-		other.data = nullptr;
+		_lines = other._lines;
+		_cols = other._cols;
+		_data = other._data; //copier le pointeur
+		other._data = nullptr;
+		other._lines = 0;
+		other._cols = 0;
 	}
-	std::cout << "op=Matrix(" << this->lines << ", " << this->cols << ")" << std::endl;
-	std::cout << "\tthis <= " << this << "\t other <= " << &other << std::endl;
+	cout << "ro=Matrix(" << _lines << ", " << _cols << ")" << endl;
+	cout << "\tthis <= " << this << "\t other <= " << &other << endl;
 	return *this;
 }
 
 
 Matrix Matrix::operator+(const Matrix & other)
 {
-	if(this->lines != other.lines || this->cols != other.cols)
+	if(_lines != other._lines || _cols != other._cols)
 		throw "Invalid size of matrices.\n";
 
-	int m = this->lines, n = other.cols;
+	int m = _lines, n = other._cols;
 	Matrix result(m, n);
 
 	for( int l = 0; l < m; l++ )
 		for( int c = 0; c < n; c++ )
-		{
-			result.data[l*n+c] = this->data[l*n+c] + other.data[l*n+c];
-		}
-	std::cout << "op+Matrix()\n";
+			result._data[l*n+c] = _data[l*n+c] + other._data[l*n+c];
+
+	cout << "op+Matrix()\n";
 	return result;
 }
 
 Matrix Matrix::operator-(const Matrix & other)
 {
-	if(this->lines != other.lines || this->cols != other.cols)
+	if(_lines != other._lines || _cols != other._cols)
 		throw "Invalid size of matrices.\n";
-	int m = this->lines, n = other.cols;
+	int m = _lines, n = other._cols;
 	Matrix result(m, n);
 
 	for( int l = 0; l < m; l++ )
 		for( int c = 0; c < n; c++ )
-			result.data[l*n+c] = this->data[l*n+c] - other.data[l*n+c];
+			result._data[l*n+c] = _data[l*n+c] - other._data[l*n+c];
 
 	return result;	
 }
 
 Matrix Matrix::operator*(const Matrix & other)
 {
-	if(this->cols != other.lines)
+	if(_cols != other._lines)
 		throw "Invalid size of matrices.\n";
-	int m = this->lines, n = other.cols;
+	int m = _lines, n = other._cols;
 	Matrix result(m, n);
 
 	for( int l = 0; l < m; l++ )
@@ -149,29 +180,38 @@ Matrix Matrix::operator*(const Matrix & other)
 		{	
 			int cell = 0;
 			for( int c = 0; c < n; c++ )
-			{
-				cell += this->data[l*n+c] * other.data[l*n+c];
-			}
-			result.data[l*n+col] = cell;
+				cell += _data[l*n+c] * other._data[l*n+c];
+			result._data[l*n+col] = cell;
 		}	
 	}
 	return result;
 }
 
-void Matrix::show()
+double Matrix::operator()( int const & i, int const & j ) const
+{ return _data[i * _cols + j]; }
+
+double & Matrix::operator()( const int & i, const int & j )
+{ return _data[i * _cols + j]; }
+
+
+Matrix transpose (Matrix matrix)
 {
-	for(int l = 0; l < this->lines; l++)
-	{
-		std::cout << "[ ";
-		for(int c = 0; c < this->cols; c++)
-			std::cout << this->data[l * this->cols + c] << " ";
-		std::cout << "]\n";
-	}
+	Matrix trans(matrix.getCols(), matrix.getLines());
+	for( int l = 0; l < matrix.getLines(); l++ )
+		for ( int c = 0; c < matrix.getCols(); c++ )
+			trans(c, l) = matrix(l, c);
+	return trans;
 }
 
-void Matrix::fillWith(int value)
+Matrix inverse (Matrix matrix)
 {
-	for(int l = 0; l < this->lines; l++)
-		for(int c = 0; c < this->cols; c++)
-			this->data[l * this->cols + c] = value;
+	Matrix inv(matrix.getCols(), matrix.getLines());
+	double modulus = modulus(matrix);
+
+	return inv;
+}
+
+double modulus(Matrix matrix)
+{
+	
 }

@@ -1,5 +1,5 @@
 CC=g++
-CFLAGS=-W -Wall -ansi -pedantic -std=c++11
+CFLAGS=-W -Wall -ansi -pedantic -std=c++11 -g
 LDFLAGS=
 
 matrix: matrix.o main.o
