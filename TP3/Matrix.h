@@ -2,6 +2,9 @@
  * File: Matrix.h
  */
 
+#include <iostream>
+using namespace std;
+
 class Matrix {
 private:
 	int _lines;
@@ -11,22 +14,24 @@ private:
 public:
 	Matrix(); //Constr. par default
 	Matrix( int lines, int cols );	//
-	Matrix( const Matrix & other);  // Recopie
-	Matrix( Matrix && other);  // Deplacement
+	Matrix( const Matrix & other );  // Recopie
+	Matrix( Matrix && other );  // Deplacement
 	~Matrix();
 
-	Matrix & operator=( const Matrix & other);
-	Matrix & operator=( Matrix && other);
+	Matrix & operator=( const Matrix & other );
+	Matrix & operator=( Matrix && other );
 
-	Matrix operator+( const Matrix & other);
-	Matrix operator-( const Matrix & other);
-	Matrix operator*( const Matrix & other);
+	Matrix operator+( const Matrix & other );
+	Matrix operator-( const Matrix & other );
+    Matrix operator-( ) const;
+	Matrix operator*( const Matrix & other );
+    Matrix operator*( const double & value );
+	
+    double & operator[]( const int & index) const;
+	double & operator()( const int & i, const int & j ) const;
 
-	double operator()( const int & i, const int & j ) const;
-	double & operator()( const int & i, const int & j );
-
-	int getCols();
-	int getLines();
+	int getCols() const;
+	int getLines() const;
 
 	//Dummy functions
 	void show();
@@ -34,6 +39,10 @@ public:
 	void fillOrder();
 };
 
-Matrix transpose (Matrix matrix);  // Est ce const?
-Matrix inverse (Matrix matrix);
-double modulus (Matrix matrix);
+ostream & operator<<( ostream &os, const Matrix &matrix );
+istream & operator>>( istream &is, const Matrix &matrix );
+Matrix transpose (const Matrix matrix);  // Est ce const?
+
+double determinant (const Matrix matrix);
+
+Matrix inverse(const Matrix matrix);

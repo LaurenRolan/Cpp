@@ -4,8 +4,6 @@
 #include "Matrix.h"
 #include <cmath>
 #include <cstring>
-#include <iostream>
-using namespace std;
 
 //Dummy functions
 void Matrix::show()
@@ -84,9 +82,9 @@ Matrix::~Matrix()
 	delete[] _data;
 }
 
-int Matrix::getLines() { return _lines; }
+int Matrix::getLines() const { return _lines; }
 
-int Matrix::getCols() { return _cols; }
+int Matrix::getCols() const { return _cols; }
 
 
 Matrix & Matrix::operator=(const Matrix & other)
@@ -118,7 +116,7 @@ Matrix & Matrix::operator=( Matrix && other)
 {
 	if ( this == &other )
 	{
-		cout << "ro=Matrix(" << _lines << ", " << _cols << ")" << endl;
+		cout << "do=Matrix(" << _lines << ", " << _cols << ")" << endl;
 		cout << "\tthis <= " << this << "\t other <= " << &other << endl;
 		return *this;
 	}
@@ -131,7 +129,7 @@ Matrix & Matrix::operator=( Matrix && other)
 		other._lines = 0;
 		other._cols = 0;
 	}
-	cout << "ro=Matrix(" << _lines << ", " << _cols << ")" << endl;
+	cout << "do=Matrix(" << _lines << ", " << _cols << ")" << endl;
 	cout << "\tthis <= " << this << "\t other <= " << &other << endl;
 	return *this;
 }
@@ -167,6 +165,14 @@ Matrix Matrix::operator-(const Matrix & other)
 	return result;	
 }
 
+ Matrix Matrix::operator-( ) const
+ {
+     for( int l = 0; l < _lines; l++ )
+		for( int c = 0; c < _cols; c++ )
+			_data[l*_cols+c] = -_data[l*_cols+c];
+     return *this;
+ }
+
 Matrix Matrix::operator*(const Matrix & other)
 {
 	if(_cols != other._lines)
@@ -175,7 +181,6 @@ Matrix Matrix::operator*(const Matrix & other)
 	Matrix result(m, n);
 
 	for( int l = 0; l < m; l++ )
-	{
 		for(int col = 0; col < n; col++)
 		{	
 			int cell = 0;
@@ -183,18 +188,46 @@ Matrix Matrix::operator*(const Matrix & other)
 				cell += _data[l*n+c] * other._data[l*n+c];
 			result._data[l*n+col] = cell;
 		}	
-	}
 	return result;
 }
 
-double Matrix::operator()( int const & i, int const & j ) const
+Matrix Matrix::operator*( const double & value )
+{
+    for( int l = 0; l < _lines; l++ )
+        for( int c = 0; c < _cols; c++ )
+            _data[l * _cols + c] *= value;
+    return *this;
+}
+
+double & Matrix::operator()( const int & i, const int & j ) const
 { return _data[i * _cols + j]; }
 
-double & Matrix::operator()( const int & i, const int & j )
-{ return _data[i * _cols + j]; }
+double & Matrix::operator[]( const int & index) const
+{
+    return _data[index];
+}
+
+ostream & operator<<( ostream &os, const Matrix &matrix )
+{
+    for(int l = 0; l < matrix.getLines(); l++)
+	{
+		os << "[ ";
+		for(int c = 0; c < matrix.getCols(); c++)
+			os << matrix(l, c) << " ";
+		os << "]\n";
+	}
+    return os;
+}
+istream & operator>>( istream &is, const Matrix &matrix )
+{
+    for(int l = 0; l < matrix.getLines(); l++)
+		for(int c = 0; c < matrix.getCols(); c++)
+			is >> matrix(l, c);
+    return is;
+}
 
 
-Matrix transpose (Matrix matrix)
+Matrix transpose (const Matrix matrix)
 {
 	Matrix trans(matrix.getCols(), matrix.getLines());
 	for( int l = 0; l < matrix.getLines(); l++ )
@@ -203,15 +236,15 @@ Matrix transpose (Matrix matrix)
 	return trans;
 }
 
-Matrix inverse (Matrix matrix)
+Matrix inverse (const Matrix matrix)
 {
 	Matrix inv(matrix.getCols(), matrix.getLines());
-	double modulus = modulus(matrix);
+	double det = determinant(matrix);
 
 	return inv;
 }
 
-double modulus(Matrix matrix)
+double determinant(const Matrix matrix)
 {
-	
+	return 0;
 }
