@@ -6,6 +6,9 @@
 #include <cmath>
 #include <cstring>
 
+int Matrix::_counter = 0;
+bool showTraces = false;
+
 //Dummy functions
 void Matrix::fillWith(int value)
 {
@@ -31,7 +34,8 @@ void Matrix::fillRandom()
 //Main functions
 Matrix::Matrix()
 {
-	cout << "+++Matrix()" << endl;
+    if(showTraces)
+        cout << "+++Matrix()" << endl;
 	_lines = 0;
 	_cols = 0;
 	_data = nullptr;
@@ -42,9 +46,12 @@ Matrix::Matrix( int lines, int cols )
 {
 	_lines = lines;
 	_cols = cols;
-	_data = new double[ lines * cols]; 	
-	cout << "+++Matrix(" << _lines << ", " << _cols << ")" << endl;
-	cout << "\tthis <= " << this << "\t lines <= " << &_lines << "\t cols <= " << &cols << endl;	
+	_data = new double[ lines * cols];
+    if(showTraces)
+    {
+        cout << "+++Matrix(" << _lines << ", " << _cols << ")" << endl;
+        cout << "\tthis <= " << this << "\t lines <= " << &_lines << "\t cols <= " << &cols << endl;
+    }
 }
 
 Matrix::Matrix( const Matrix & other)
@@ -56,8 +63,12 @@ Matrix::Matrix( const Matrix & other)
 		memcpy(_data, other._data, sizeof(double) * other._lines * other._cols);
 	else
 		_data = nullptr;
-	cout << "rrrMatrix(" << _lines << ", " << _cols << ")" << endl;
-	cout << "\tthis <= " << this << "\t other <= " << &other << endl;
+    if(showTraces)
+    {
+        cout << "rrrMatrix(" << _lines << ", " << _cols << ")" << endl;
+	   cout << "\tthis <= " << this << "\t other <= " << &other << endl;
+    }
+	
 }
 
 Matrix::Matrix( Matrix && other)
@@ -69,13 +80,17 @@ Matrix::Matrix( Matrix && other)
 	other._lines = 0;
 	other._cols = 0;
 	other._data = nullptr;
-	cout << "dddMatrix(" << _lines << ", " << _cols << ")" << endl;
-	cout << "\tthis <= " << this << "\t other <= " << &other << endl;
+    if(showTraces)
+    {
+        cout << "dddMatrix(" << _lines << ", " << _cols << ")" << endl;
+	   cout << "\tthis <= " << this << "\t other <= " << &other << endl;
+    }
 }
 
 Matrix::~Matrix()
 {
-	cout << "---Matrix(" << _lines << ", " << _cols << ")" << endl;
+    if(showTraces)
+        cout << "---Matrix(" << _lines << ", " << _cols << ")" << endl;
 	delete[] _data;
 }
 
@@ -88,8 +103,11 @@ Matrix & Matrix::operator=(const Matrix & other)
 {
 	if ( this == &other )
 	{
-		cout << "op=Matrix(" << _lines << ", " << _cols << ")" << endl;
-		cout << "\tthis <= " << this << "\t other <= " << &other << endl;
+        if(showTraces)
+        {
+            cout << "op=Matrix(" << _lines << ", " << _cols << ")" << endl;
+		  cout << "\tthis <= " << this << "\t other <= " << &other << endl;
+        }
 		return *this;
 	}
 	else
@@ -103,8 +121,11 @@ Matrix & Matrix::operator=(const Matrix & other)
 		else
 			_data = nullptr;
 	}
-	cout << "op=Matrix(" << _lines << ", " << _cols << ")" << endl;
-	cout << "\tthis <= " << this << "\t other <= " << &other << endl;
+	if(showTraces)
+        {
+            cout << "op=Matrix(" << _lines << ", " << _cols << ")" << endl;
+		  cout << "\tthis <= " << this << "\t other <= " << &other << endl;
+        }
 	return *this;
 }
 
@@ -113,8 +134,11 @@ Matrix & Matrix::operator=( Matrix && other)
 {
 	if ( this == &other )
 	{
-		cout << "do=Matrix(" << _lines << ", " << _cols << ")" << endl;
-		cout << "\tthis <= " << this << "\t other <= " << &other << endl;
+        if(showTraces)
+        {
+            cout << "do=Matrix(" << _lines << ", " << _cols << ")" << endl;
+		  cout << "\tthis <= " << this << "\t other <= " << &other << endl;
+        }
 		return *this;
 	}
 	else
@@ -126,8 +150,11 @@ Matrix & Matrix::operator=( Matrix && other)
 		other._lines = 0;
 		other._cols = 0;
 	}
-	cout << "do=Matrix(" << _lines << ", " << _cols << ")" << endl;
-	cout << "\tthis <= " << this << "\t other <= " << &other << endl;
+	if(showTraces)
+        {
+            cout << "do=Matrix(" << _lines << ", " << _cols << ")" << endl;
+		  cout << "\tthis <= " << this << "\t other <= " << &other << endl;
+        }
 	return *this;
 }
 
@@ -144,7 +171,8 @@ Matrix Matrix::operator+(const Matrix & other)
 		for( int c = 0; c < n; c++ )
 			result._data[l*n+c] = _data[l*n+c] + other._data[l*n+c];
 
-	cout << "op+Matrix()\n";
+    if(showTraces)
+        cout << "op+Matrix()\n";
 	return result;
 }
 
@@ -250,7 +278,6 @@ Matrix Matrix::minorMatrix(const int & row, const int & col)
                 }
             }
         }
-    cout << min;
     return min;
 }
 
@@ -292,6 +319,7 @@ double Matrix::determinant()
 {
     if(_lines != _cols)
         throw "Must be square matrix.\n";
+    _counter++;
     if(_lines == 1)
         return _data[0];
     if(_lines == 2)
@@ -307,3 +335,6 @@ double Matrix::determinant()
     }
 	return det;
 }
+
+void Matrix::resetCounter(){ _counter = 0; }
+int Matrix::getCounter() { return _counter; }

@@ -1,7 +1,8 @@
 /* Author: Lauren Sampaio
  * File: main.cpp
  */
- #include "Matrix.h"
+#include "Matrix.h"
+#include "MatrixExceptions.h"
 #include <iostream>
 #include <cmath>
 using namespace std;
@@ -87,12 +88,54 @@ void part3()
     cout << square;
     cout << square.determinant();
     cout << square.inverse();
+    
+    Matrix fourByFour(4,4);
+    fourByFour(0,0) = 1;
+    fourByFour(0,1) = 2;
+    fourByFour(0,2) = 1;
+    fourByFour(0,3) = 0;
+    fourByFour(1,0) = 0;
+    fourByFour(1,1) = 1;
+    fourByFour(1,2) = 3;
+    fourByFour(1,3) = 3;
+    fourByFour(2,0) = 1;
+    fourByFour(2,1) = 4;
+    fourByFour(2,2) = 6;
+    fourByFour(2,3) = 4;
+    fourByFour(3,0) = 0;
+    fourByFour(3,1) = 0;
+    fourByFour(3,2) = 1;
+    fourByFour(3,3) = 0;
+    cout << fourByFour;
+    cout << fourByFour.determinant();
+    cout << fourByFour.inverse();
+
+    cout << "Hacking time!\n";
+    double* hack = square[0];
+    for(int i = 0; i < 9; i++)
+        cout << hack[i] << " ";
+    cout << endl;
 }
 
 
 void part4()
 {
-    
+    for(int size=2; size < 10; size++)
+    {
+        Matrix square(size, size);
+        try{
+            square.fillRandom();
+            cout << square;
+            cout << square.inverse();
+            cout << square.getCounter();
+            square.resetCounter();    
+        }catch(DeterminantException& e)
+        {
+            cout << e.what();
+            size--;
+        }
+        
+    }
 }
 void part5()
 {
