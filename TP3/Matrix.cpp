@@ -265,7 +265,7 @@ Matrix Matrix::transpose ()
 
 double Matrix::cofactor(const int & row, const int & column)
 {
-    
+    return minorMatrix(row, column).determinant();
 }
 
 Matrix Matrix::comatrix()
@@ -273,7 +273,7 @@ Matrix Matrix::comatrix()
     Matrix co(_cols, _lines);
 	for( int l = 0; l < _lines; l++ )
 		for ( int c = 0; c < _cols; c++ )
-			co(c, l) = cofactor(l, c);
+			co(l, c) = cofactor(l, c);
 	return co;
 }
 

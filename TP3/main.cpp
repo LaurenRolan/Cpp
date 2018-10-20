@@ -81,9 +81,12 @@ void part2()
 void part3()
 {
 	Matrix square(3,3);
-    square.fillRandom();
+    square(0,0) = 1;
+    square(1,1) = 2;
+    square(2,2) = 3;
     cout << square;
     cout << square.determinant();
+    cout << square.inverse();
 }
 
 
