@@ -9,12 +9,14 @@ using namespace std;
 void part1();
 void part2();
 void part3();
+void part4();
+void part5();
 void foo(Matrix);
 
 int main()
 {
 	int choice = 0;
-	std::cout << "Choisissez la partie (1, 2 ou 3)\n";
+	std::cout << "Choisissez la partie (1, 2, 3, 4 ou 5)\n";
 	std::cin >> choice;
 	
 	switch(choice)
@@ -22,6 +24,8 @@ int main()
 		case 1: part1(); break;
 		case 2: part2(); break;
 		case 3: part3(); break;
+		case 4: part4(); break;
+		case 5: part5(); break;        
 		default: break;
 	}
 }
@@ -58,13 +62,12 @@ void part1()
 	cout << four;
 	cout << four(3, 3) << endl;
 
-	Matrix trans = transpose(four);
+	Matrix trans = four.transpose();
 	cout << trans;
 
 	Matrix notSquare(5, 2);
 	notSquare.fillOrder();
-	trans = transpose(notSquare);
-	cout << trans;
+	cout << notSquare.transpose();
 }
 
 void part2()
@@ -77,7 +80,20 @@ void part2()
 
 void part3()
 {
-	
+	Matrix square(3,3);
+    square.fillRandom();
+    cout << square;
+    cout << square.determinant();
+}
+
+
+void part4()
+{
+    
+}
+void part5()
+{
+    
 }
 
 void foo(Matrix)
