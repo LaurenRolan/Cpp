@@ -292,12 +292,15 @@ Matrix Matrix::transpose ()
 
 double Matrix::cofactor(const int & row, const int & column)
 {
-    return minorMatrix(row, column).determinant();
+    if((column + row) % 2 == 0)
+        return minorMatrix(row, column).determinant();
+    else
+        return -minorMatrix(row, column).determinant();
 }
 
 Matrix Matrix::comatrix()
 {
-    Matrix co(_cols, _lines);
+    Matrix co(_lines, _cols);
 	for( int l = 0; l < _lines; l++ )
 		for ( int c = 0; c < _cols; c++ )
 			co(l, c) = cofactor(l, c);
@@ -311,7 +314,6 @@ Matrix Matrix::inverse()
 	double det = determinant();
     if(det == 0)
         throw DeterminantException();
-    
 	return comatrix().transpose() * (1 / det);
 }
 
@@ -329,9 +331,9 @@ double Matrix::determinant()
     {
         Matrix current = minorMatrix(0, p);
         if(p%2 == 0)
-            det += current.determinant();
+            det += _data[p] * current.determinant();
         else
-            det -= current.determinant();
+            det -= _data[p] * current.determinant();
     }
 	return det;
 }

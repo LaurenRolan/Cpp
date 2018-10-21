@@ -107,7 +107,7 @@ void part3()
     fourByFour(3,2) = 1;
     fourByFour(3,3) = 0;
     cout << fourByFour;
-    cout << fourByFour.determinant();
+    cout << endl << fourByFour.determinant() << endl;
     cout << fourByFour.inverse();
 
     cout << "Hacking time!\n";
@@ -127,7 +127,7 @@ void part4()
             square.fillRandom();
             cout << square;
             cout << square.inverse();
-            cout << square.getCounter();
+            cout << "Counter " << square.getCounter() << endl << endl;
             square.resetCounter();    
         }catch(DeterminantException& e)
         {
