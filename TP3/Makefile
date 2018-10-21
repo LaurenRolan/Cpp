@@ -1,15 +1,26 @@
-CC=g++
+EXE = matrix
+
+CC = g++
+SRC_DIR = src
+OBJ_DIR = obj
+
+SRC = $(wildcard $(SRC_DIR)/*.cpp)
+OBJ = $(SRC:$(SRC_DIR)/%.cpp=$(OBJ_DIR)/%.o)
+
+CPPFLAGS += -Iinclude
 CFLAGS=-W -Wall -ansi -pedantic -std=c++11 -g
-LDFLAGS=
+LDFLAGS += -Llib
+LDLIBS +=
 
-matrix: matrix.o main.o
-	$(CC) -o matrix matrix.o main.o $(LDFLAGS) 
+.PHONY: all clean
 
-matrix.o: Matrix.cpp Matrix.h
-	$(CC) $(CFLAGS) -o matrix.o -c Matrix.cpp
+all: $(EXE)
 
-main.o: main.cpp Matrix.h
-	$(CC) $(CFLAGS) -o main.o -c main.cpp
+$(EXE): $(OBJ)
+	$(CC) $(LDFLAGS) $^ $(LDLIBS) -o $@
+
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
+	$(CC) $(CPPFLAGS) $(CFLAGS) -c $< -o $@
 
 clean:
-	rm -rf *.o matrix
+	$(RM) $(OBJ)

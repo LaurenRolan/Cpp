@@ -11,13 +11,12 @@ void part1();
 void part2();
 void part3();
 void part4();
-void part5();
 void foo(Matrix);
 
 int main()
 {
 	int choice = 0;
-	std::cout << "Choisissez la partie (1, 2, 3, 4 ou 5)\n";
+	std::cout << "Choisissez la partie (1, 2, 3, 4)\n";
 	std::cin >> choice;
 	
 	switch(choice)
@@ -25,8 +24,7 @@ int main()
 		case 1: part1(); break;
 		case 2: part2(); break;
 		case 3: part3(); break;
-		case 4: part4(); break;
-		case 5: part5(); break;        
+		case 4: part4(); break;    
 		default: break;
 	}
 }
@@ -136,10 +134,6 @@ void part4()
         }
         
     }
-}
-void part5()
-{
-    
 }
 
 void foo(Matrix)
