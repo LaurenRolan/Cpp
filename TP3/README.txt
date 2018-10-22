@@ -32,10 +32,11 @@ Counter = 5
 Inverse of A(3, 3) 
 Counter = 13
 
-/* Counter = 1 + Nrows + Nrows*(Nrows-1) + Nrows²*/
+/* Counter = 1 + Nrows² + Nrows^3 */
 Inverse of A(4, 4) 
 Counter = 81
 
+/* Counter = 1 + */
 Inverse of A(5, 5)
 Counter = 511
 
