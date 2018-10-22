@@ -32,27 +32,28 @@ Counter = 5
 Inverse of A(3, 3) 
 Counter = 13
 
-/* Counter = 1 + Nrows² + Nrows^3 */
+/* Counter = 1 + Nrows² + Nrows*(Counter(Nrows-1)) + Nrows*(Nrows-1) */
 Inverse of A(4, 4) 
 Counter = 81
 
-/* Counter = 1 + */
+/* Counter = 1 + Nrows² + Nrows*(Counter(Nrows-1)) + Nrows*(Nrows-1)*(1 + (Nrows-2)) */
 Inverse of A(5, 5)
 Counter = 511
 
+/* Counter = 1 + Nrows² + Nrows*(Counter(Nrows-1)) + Nrows*(Nrows-1)*(1 + (Nrows-2)*(1 + (Nrows - 3))) */
 Inverse of A(6, 6)
 Counter = 3613
 
+/* Counter = 1 + Nrows² + Nrows*(Counter(Nrows-1)) + Nrows*(Nrows-1)*(1 + (Nrows-2)*(1 + (Nrows - 3)*(1 + (Nrows - 4)))) */
 Inverse of A(7, 7)
 Counter = 28953
 
+/* Counter = ... +  Nrows*(Nrows-1)*(1 + (Nrows-2)*(1 + (Nrows - 3)*(1 + (Nrows - 4)*(1 + (Nrows - 5))))) */
 Inverse of A(8, 8)
 Counter = 260641
 
+/* Counter = ... +  Nrows*(Nrows-1)*(1 + (Nrows-2)*(1 + (Nrows - 3)*(1 + (Nrows - 4)*(1 + (Nrows - 5)*(1 + (Nrows - 6)))))) */
 Inverse of A(9, 9)
 Counter = 2606491
 
-
-
-
-
+C'est une expréssion recursive, donc sa complexité est presque O(n^(n-1)).
