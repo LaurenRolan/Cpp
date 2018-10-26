@@ -1,20 +1,25 @@
 /* Author: Lauren Sampaio
  * File: Compteur.h
  */
+#ifndef COMPTEUR_H
+#define COMPTEUR_H
 
 #include <iostream>
 #include "Obstacle.h"
 
 using namespace std;
 
-class Compteur : public Obstacle {
-private:
-  Obstacle * _prochaine;
-  int _compteur;
-  bool _estPere;
+class Compteur : public virtual Obstacle {
 public:
-	Compteur() { _compteur = 0; };
-	Compteur(const Obstacle *prochaine);
-	void incCompteur() { _compteur++; }
-	int getCompteur() { return _compteur; }
+	Compteur( );
+	Compteur( Obstacle *prochaine );
+	void setProchaine( Obstacle * prochaine );
+	void incCompteur();
+	int getCompteur();
+
+private:
+	int _compteur;
+  	bool _estPere;
 };
+
+#endif

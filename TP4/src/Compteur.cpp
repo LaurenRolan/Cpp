@@ -4,10 +4,13 @@
 
 #include "Compteur.h"
 
-Compteur::Compteur( const Obstacle *prochaine )
+Compteur::Compteur()
+{ _compteur = 0; }
+
+Compteur::Compteur( Obstacle *prochaine )
 {
-	_prochaine = prochaine;
-	if(!prochaine->aPere())
+	_prochaine[0] = prochaine;
+	if(!prochaine->hasPere())
 	{
 		prochaine->adopte();
 		_estPere = true;
@@ -15,3 +18,12 @@ Compteur::Compteur( const Obstacle *prochaine )
 	_compteur = 0;
 }
 
+void Compteur::setProchaine( Obstacle *prochaine ) 
+{ _prochaine[0] = prochaine; }
+
+
+void Compteur::incCompteur() 
+{ _compteur++; }
+
+int Compteur::getCompteur()
+{ return _compteur; }

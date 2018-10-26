@@ -3,19 +3,26 @@
  */
 #include "Clou.h"
 
-Clou::Clou( const Obstacle *gauche, const Obstacle *droite )
+Clou::Clou( Obstacle *gauche, Obstacle *droite )
 {
 	_prochaine[0] = gauche;
-	_prochaine[1] = droite;
-	if(!gauche->aPere())
+	if(!gauche->hasPere())
 	{
 		gauche->adopte();
 		_sontFils[0] = true;
 	}
-	if(!droite->aPere())
+
+	_prochaine[1] = droite;
+	if(!droite->hasPere())
 	{
 		droite->adopte();
 		_sontFils[1] = true;
 	}
+
 }
 
+Clou::Clou() 
+{ 
+	_prochaine[0] = nullptr;
+	_prochaine[1] = nullptr;
+}

@@ -3,12 +3,10 @@
  */
 #include "Lanceur.h"
 
-Lanceur::Lanceur(const Obstacle *premier)
-{
-	_premier = premier;
-}
+Lanceur::Lanceur( Obstacle *premier)
+{ _premier = premier; }
+
+Lanceur::Lanceur( ) { }
 
 Lanceur::~Lanceur()
-{
-	delete _premier;
-}
+{ delete _premier; }
