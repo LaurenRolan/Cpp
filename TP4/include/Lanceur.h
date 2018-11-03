@@ -12,9 +12,11 @@ class Lanceur {
 private:
 	Obstacle * _premier;
 public:
-	Lanceur( Obstacle *premier);
+	Lanceur( Obstacle *premier );
 	Lanceur( );
 	~Lanceur();
+	void lancer( int place );
+	void setPremier( Obstacle *premier );
 };
 
 #endif

@@ -10,8 +10,8 @@ using namespace std;
 class Obstacle {
 public:
   Obstacle();
+  Obstacle(Obstacle* gauche, Obstacle* droite);
   virtual ~Obstacle();
-  void virtual recoitPalet() = 0;
 
   void setGauche( Obstacle *gauche);
   void setDroite( Obstacle *droite);
@@ -23,7 +23,12 @@ public:
   bool hasPere();
   void adopte();
 
+  virtual void recoitPalet( int place );
+  
+  static int getInstances();
+
 protected:
+  static int _instances;
   bool _aPere;
   Obstacle * _prochaine[2];
   bool _sontFils[2];

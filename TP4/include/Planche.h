@@ -15,11 +15,16 @@ class Planche {
 public:
 	Planche(int nCompteurs);
 	~Planche();
-
+	void simulation(int palets);
+	static int getInstances();
+	void afficher();
+	
 private:
+	static int _instances;
 	int _nCompteurs;
 	Compteur *_terminal;
-	Lanceur _lanceur;
+	Lanceur * _lanceur;
+	Compteur ** _compteurs;
 	Obstacle ** _table;
 };
 

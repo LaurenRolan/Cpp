@@ -8,12 +8,13 @@
 #include "Obstacle.h"
 using namespace std;
 
-class Clou : public virtual Obstacle {
+class Clou : public Obstacle {
 
 public:
 	Clou( Obstacle *gauche, Obstacle *droite );
 	Clou( );
-	~Clou();
+	~Clou( ) override;
+    void recoitPalet( int place );
 };
 
 #endif

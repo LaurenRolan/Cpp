@@ -9,14 +9,16 @@
 
 using namespace std;
 
-class Compteur : public virtual Obstacle {
+class Compteur : public Obstacle {
 public:
 	Compteur( );
 	Compteur( Obstacle *prochaine );
+	~Compteur( ) override;
 	void setProchaine( Obstacle * prochaine );
+    void recoitPalet( int place );
 	void incCompteur();
 	int getCompteur();
-
+	
 private:
 	int _compteur;
   	bool _estPere;

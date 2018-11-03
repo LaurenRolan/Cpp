@@ -2,9 +2,24 @@
  * File: Obstacle.cpp
  */
 #include "Obstacle.h"
+#include <iostream>
+using namespace std;
 
-Obstacle::Obstacle() {}
-Obstacle::~Obstacle() { delete _prochaine; }
+int Obstacle::_instances = 0;
+
+Obstacle::Obstacle() {  }
+Obstacle::~Obstacle() {  }
+
+int Obstacle::getInstances()
+{
+	return _instances;
+}
+
+Obstacle::Obstacle(Obstacle* gauche, Obstacle* droite)
+{
+	setGauche(gauche);
+	setDroite(droite);
+}
 
 bool Obstacle::hasPere() 
 { return _aPere; }
@@ -12,8 +27,7 @@ bool Obstacle::hasPere()
 void Obstacle::adopte() 
 { _aPere = true; }
 
-
- void Obstacle::setGauche( Obstacle *gauche )
+void Obstacle::setGauche( Obstacle *gauche )
 {
 	if(gauche == nullptr)
 	{
@@ -52,3 +66,5 @@ Obstacle * Obstacle::getGauche()
 
 Obstacle * Obstacle::getDroite() 
 { return _prochaine[1]; }
+
+void Obstacle::recoitPalet( int place ) { }
