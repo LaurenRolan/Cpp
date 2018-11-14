@@ -279,16 +279,20 @@ bool SetOfDouble::isSubsetOf(const SetOfDouble & other) const
   Node current = this->list;
   Node comparison = other->list;
 
-  while(current)
+  while(comparison)
   {
     if(current->value == comparison->value)
     {
       current = current->getNext();
-      comparison = comparison->getNext();
+      if(!current) //Got to the end
+      {
+        return true;
+      }
+      comparison = other->list;
     }
     else
     {
-      comparison = 
+      comparison = comparison->getNext();
     }
   };
   return false;

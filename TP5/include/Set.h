@@ -7,6 +7,8 @@
 #include <iostream>
 using namespace std;
 
+/*
+
 template  <typename T> 
 class Set {
 public:
@@ -134,4 +136,5 @@ template <typename T> Set<T> operator&(const Set<T> & a, const Set<T> & b);
 {
 
 }
+*/
 #endif
