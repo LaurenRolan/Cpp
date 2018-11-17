@@ -5,6 +5,8 @@
 #include <iostream>
 using namespace std;
 
+extern bool showTrace;
+
 Clou::Clou( Obstacle *gauche, Obstacle *droite ) : Obstacle(gauche, droite)
 { _instances++; }
 
@@ -17,7 +19,6 @@ Clou::Clou()
 
 Clou::~Clou()
 {
-    cout << "---Clou()\n";
 	if(filsGauche())
 	{
 		delete _prochaine[0];
@@ -30,12 +31,14 @@ Clou::~Clou()
 
 void Clou::recoitPalet(int place)
 {
-    for(int i = 0; i < place; i++)
+    if(showTrace)
     {
-        cout << "  ";
+        for(int i = 0; i < place; i++)
+        {
+            cout << "  ";
+        }
+        cout << "x \n";
     }
-    cout << "x \n";
-
 	if( _prochaine[0] != nullptr && _prochaine[1] != nullptr )
     {
     	if(rand() % 100 >= 50)
@@ -54,5 +57,20 @@ void Clou::recoitPalet(int place)
     else
     {
     	_prochaine[0]->recoitPalet(place - 1);	
+    }
+}
+
+void Clou::afficher( int place )
+{
+    cout << " x ";
+    //Si est dans la derniere colonne
+    if(filsDroite() && !filsGauche())
+    {
+        _prochaine[1]->afficher( place );
+    }
+    else
+    {
+        _prochaine[1]->afficher( place );
+        _prochaine[0]->afficher( place + 1 );
     }
 }

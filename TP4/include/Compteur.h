@@ -15,9 +15,13 @@ public:
 	Compteur( Obstacle *prochaine );
 	~Compteur( ) override;
 	void setProchaine( Obstacle * prochaine );
+
     void recoitPalet( int place );
-	void incCompteur();
-	int getCompteur();
+    void afficher( int place );
+
+	void incCompteur( );
+	int getCompteur( );
+	void rstCompteur( );
 	
 private:
 	int _compteur;

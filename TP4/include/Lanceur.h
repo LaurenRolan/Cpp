@@ -17,6 +17,7 @@ public:
 	~Lanceur();
 	void lancer( int place );
 	void setPremier( Obstacle *premier );
+	void afficher( int place );
 };
 
 #endif

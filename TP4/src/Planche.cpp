@@ -5,6 +5,7 @@
 #include <iostream>
 using namespace std;
 
+extern bool showTrace;
 int Planche::_instances = 0;
 
 Planche::Planche( int nCompteurs )
@@ -54,7 +55,6 @@ Planche::Planche( int nCompteurs )
 
 Planche::~Planche()
 {
-	cout << "---Planche()\n";
 	delete _lanceur;
 	delete [] _compteurs;
 	delete [] _table;
@@ -64,10 +64,13 @@ void Planche::simulation( int palets )
 {
 	for(int round = 0; round < palets; round++)
 	{
-		cout << "\nRound " << round << endl;
-		for(int i = 0; i <_nCompteurs * 2 - 1; i++)
-			cout << "  ";
-		cout << "v\n";
+		if(showTrace)
+		{
+			cout << "\nRound " << round << endl;
+			for(int i = 0; i <_nCompteurs * 2 - 1; i++)
+				cout << "  ";
+			cout << "v\n";	
+		}
 		_lanceur->lancer( _nCompteurs * 2 - 1 );
 	}
 	cout << "Round(c0)(" << _terminal->getCompteur() << ", " << _terminal->getCompteur() << ")\n";
@@ -84,7 +87,6 @@ int Planche::getInstances()
 
 void Planche::afficher()
 {
-	for(int i = 0; i <_nCompteurs * 2 - 1; i++)
-			cout << "  ";
-	cout << "v\n";
+	cout << " > ";
+	_lanceur->afficher( 2 );
 }

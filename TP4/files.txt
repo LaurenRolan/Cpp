@@ -1,6 +1,13 @@
 README.txt
 Makefile
-include/Matrix.h
-include/MatrixExceptions.h
-src/Matrix.cpp
+include/Obstacle.h
+src/Obstacle.cpp
+include/Clou.h
+src/Clou.cpp
+include/Compteur.h
+src/Compteur.cpp
+include/Lanceur.h
+src/Lanceur.cpp
+include/Planche.h
+src/Planche.cpp
 src/main.cpp

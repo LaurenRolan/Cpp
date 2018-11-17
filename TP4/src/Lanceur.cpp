@@ -14,7 +14,6 @@ Lanceur::Lanceur( ) { }
 
 Lanceur::~Lanceur( ) 
 {
-	cout << "---Lanceur()\n"; 
 	delete _premier; 
 }
 
@@ -24,4 +23,9 @@ void Lanceur::setPremier( Obstacle *premier )
 void Lanceur::lancer( int place )
 {
 	_premier->recoitPalet( place );
+}
+
+void Lanceur::afficher( int place )
+{
+	_premier->afficher( place );
 }

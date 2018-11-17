@@ -7,6 +7,8 @@
 #include <iostream>
 using namespace std;
 
+extern bool showTrace;
+
 class Obstacle {
 public:
   Obstacle();
@@ -22,6 +24,8 @@ public:
 
   bool hasPere();
   void adopte();
+
+  virtual void afficher( int place );
 
   virtual void recoitPalet( int place );
   

@@ -15,6 +15,7 @@ public:
 	Clou( );
 	~Clou( ) override;
     void recoitPalet( int place );
+    void afficher( int place );
 };
 
 #endif

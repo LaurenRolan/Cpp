@@ -6,6 +6,8 @@
 #include <iostream>
 using namespace std;
 
+extern bool showTrace;
+
 Compteur::Compteur()
 {
 	_instances++; 
@@ -20,7 +22,6 @@ Compteur::Compteur( Obstacle *prochaine ) : Obstacle(prochaine, nullptr)
 
 Compteur::~Compteur( )
 {
-	cout << "---Compteur()\n";
 	if(filsGauche())
 	{
 		delete _prochaine[0];
@@ -34,19 +35,49 @@ void Compteur::setProchaine( Obstacle *prochaine )
 void Compteur::incCompteur() 
 { _compteur++; }
 
+void Compteur::rstCompteur()
+{ _compteur = 0; }
+
 int Compteur::getCompteur()
 { return _compteur; }
 
 void Compteur::recoitPalet(int place)
 {
 	incCompteur();
-	for(int i = 0; i < place; i++)
+	if(showTrace)
 	{
-		cout << "  ";
+		for(int i = 0; i < place; i++)
+		{
+			cout << "  ";
+		}
+		cout << "o\n";
 	}
-	cout << "o\n";
+	
     if( _prochaine[0] != nullptr )
     {
     	_prochaine[0]->recoitPalet(place - 1);
+    }
+}
+
+void Compteur::afficher( int place )
+{
+	cout << " o ";
+	//Si est feuille
+    if(!filsDroite())
+    {
+        cout << endl;
+        for(int i = 0; i < place; i++)
+        {
+            cout << "   ";
+        }    
+    }
+    else
+    {
+    	cout << endl;
+        for(int i = 0; i < place; i++)
+        {
+            cout << "   ";
+        }
+        cout << " o \n";
     }
 }

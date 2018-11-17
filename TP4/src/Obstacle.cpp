@@ -5,6 +5,8 @@
 #include <iostream>
 using namespace std;
 
+
+bool showTrace;
 int Obstacle::_instances = 0;
 
 Obstacle::Obstacle() {  }
@@ -68,3 +70,5 @@ Obstacle * Obstacle::getDroite()
 { return _prochaine[1]; }
 
 void Obstacle::recoitPalet( int place ) { }
+
+void Obstacle::afficher( int place ) { }

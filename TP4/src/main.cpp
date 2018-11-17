@@ -6,6 +6,8 @@
 #include <cmath>
 using namespace std;
 
+extern bool showTrace;
+
 void part1();
 void part2();
 
@@ -23,6 +25,21 @@ int main()
 	}
 }
 
+void setShowTrace()
+{
+	char afficher;
+	cout << "Afficher position courrant (O/N)?\t";
+	cin >> afficher;
+	if(afficher == 'O' || afficher == 'o')
+	{
+		showTrace = true;
+	}
+	else
+	{
+		showTrace = false;
+	}
+}
+
 void part1()
 {
 	int compteurs, palets;
@@ -31,6 +48,7 @@ void part1()
 	Planche planche(compteurs);
 	cout << "# de palets:\t";
 	cin >> palets;
+	setShowTrace();
 	planche.simulation(palets);
 	cout << "# de instances: " << planche.getInstances() << endl;
 }
