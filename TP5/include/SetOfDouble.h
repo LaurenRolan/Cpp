@@ -10,6 +10,8 @@
 
 #include <iostream>
 #include <ostream>
+#include <cstring>
+
 using namespace std;
 
 class SetOfDouble {
@@ -91,22 +93,22 @@ bool operator==(const SetOfDouble & a, const SetOfDouble & b)
 }
 bool operator<(const SetOfDouble & a, const SetOfDouble & b)
 {
-	if(a.isSubsetOf(b) && b.isSubsetOf(a)) {
+        if(a.isSubsetOf(b) && b.isSubsetOf(a)) {
 		return false;
 	} 
-	if(b.isSubsetOf(a)) {
+        if(a.isSubsetOf(b)) {
 		return true;
-	} 
+        }
 	return false;
 }
 bool operator>(const SetOfDouble & a, const SetOfDouble & b)
 {
-	if(a.isSubsetOf(b) && b.isSubsetOf(a)) {
+        if(a.isSubsetOf(b) && b.isSubsetOf(a)) {
 		return false;
 	} 
-	if(a.isSubsetOf(b)) {
+        if(b.isSubsetOf(a)) {
 		return true;
-	} 
+        }
 	return false;
 }
 
@@ -160,7 +162,13 @@ SetOfDouble::SetOfDouble(double x)
 
 SetOfDouble::SetOfDouble(const SetOfDouble & other)
 {
-  this->list = other.list;
+    if(other.list)
+    {
+        this->list = nullptr;
+        other.insertInto(*this);
+    } else {
+        list = nullptr;
+    }
 }
 
 SetOfDouble::~SetOfDouble()
@@ -216,54 +224,45 @@ void SetOfDouble::insert(double x)
 	{
 		this->list = new Node(x, nullptr);
 	}
-	Node * current = this->list;
-	Node * before = nullptr;
-	while(current)
-	{
-		if(current->getValue() > x)
-		{
-			Node * temp = new Node(x, current);
-			if(before)
-			{
-				before->setNext(temp);
-			} else {
-				this->list = temp;
-			}
-			return;
-		}
-		before = current;
-		current = current->getNext();
-	}
-	before->setNext(new Node(x, nullptr));
+        else
+        {
+            Node * new_head = new Node(x, this->list);
+            this->list = new_head;
+        }
 }
 
 void SetOfDouble::remove(double x)
 {
-	if(!this->list)
-	{
-		cout << "!!!No objects in list.\n";
-		return;
-	}
-	Node * current = this->list;
-	Node * before = nullptr;
-	while(current)
-	{
-		if(current->getValue() == x)
-		{
-			if(before)
-			{
-				before->setNext(current->getNext());
-			} else {
-				this->list = current->getNext();
-			}
-			current->setNext(nullptr);
-			delete current;
-			return;
-		}
-		before = current;
-		current = current->getNext();
-	}
-	cout << "!!!No match in list.\n";
+
+    list = remove(list, x);
+}
+
+SetOfDouble::Node * SetOfDouble::remove(Node *list, double x)
+{
+    if(!list)
+    {
+        return list;
+    }
+    Node * current = list;
+    Node * before = nullptr;
+    while(current)
+    {
+        if(current->getValue() == x)
+        {
+            if(before)
+            {
+                before->setNext(current->getNext());
+            } else {
+                list = current->getNext();
+            }
+            current->setNext(nullptr);
+            delete current;
+            return list;
+        }
+        before = current;
+        current = current->getNext();
+    }
+    return list;
 }
 
 
@@ -293,7 +292,7 @@ SetOfDouble & SetOfDouble::operator=(const SetOfDouble & other)
 	{
 		return *this;
 	}
-	this->list = other.list;
+        other.insertInto(*this);
 	return *this;
 }
 

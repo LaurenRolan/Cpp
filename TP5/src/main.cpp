@@ -124,17 +124,33 @@ void part2()
 	set1.insert(1);
 	set1.insert(2);
 	set1.insert(3);
+
 	SetOfDouble set11;
 	set11.insert(1);
 	set11.insert(2);
 	set11.insert(3);
+
 	SetOfDouble set2;
 	set2.insert(4);
 	set2.insert(5);
 	set2.insert(6);
+
 	SetOfDouble set3;
-	set3.insert(3);
-	set3.insert(4);
+        set3.insert(3);
+
+        SetOfDouble set4;
+        set4.insert(3);
+        set4.insert(4);
+        set4.insert(5);
+        set4.insert(6);
+
+
+        set1.flush(cout);
+        set11.flush(cout);
+        set2.flush(cout);
+        set3.flush(cout);
+        set4.flush(cout);
+
 	cout << "------Extra Functions------\n";
 	cout << "---Check equals and ==\n";
 	if(equals(set1, set3))
@@ -150,13 +166,13 @@ void part2()
 		cout << "Set1 == Set11\n";
 	}
 	cout << "---Check > and <\n";
-	if(set1 > set3)
-	{
-		cout << "Set1 is bigger than Set3\n";
-	}
-	if(set3 < set2)
-	{
-		cout << "Set2 is bigger than Set3\n";
-	}
-	
+        if(set1 > set3)
+        {
+            cout << "Set1 is bigger than Set3\n";
+        }
+        if(set2 < set4)
+        {
+            cout << "Set4 is bigger than Set2\n";
+        }
+
 }

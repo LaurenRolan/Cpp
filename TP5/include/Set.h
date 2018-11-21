@@ -7,8 +7,6 @@
 #include <iostream>
 using namespace std;
 
-/*
-
 template  <typename T> 
 class Set {
 public:
@@ -75,66 +73,88 @@ template <typename T> Set<T> intersection(const Set<T> & a, const Set<T> & b);
 template <typename T> Set<T> operator&(const Set<T> & a, const Set<T> & b);
 
 
-<template T> Set<T>::Set() 
+template <typename T> Set<T>::Set()
+{
+      list = nullptr;
+}
+template <typename T> Set<T>::Set(T x)
+{
+    list = new Set<T>::Node(x);
+}
+template <typename T> Set<T>::~Set()
+{
+    delete list;
+}
+
+template <typename T> bool Set<T>::isEmpty()
+{
+    if(list) {
+      return true;
+    }
+    return false;
+}
+template <typename T> std::ostream & Set<T>::flush(std::ostream & out) const
+{
+    out << "{ ";
+    for(Node * current = this->list; current; current = current->getNext())
+    {
+            out << current->getValue();
+            if(current->getNext())
+            {
+                    out << ", ";
+            }
+    }
+    out << " }\n";
+    return out;
+}
+
+template <typename T> bool Set<T>::contains(T x) const
+{
+    Node * current = this->list;
+    while(current)
+    {
+      if(current->getValue() == x)
+      {
+        return true;
+      }
+      current = current->getNext();
+    };
+    return false;
+}
+
+template <typename T> bool Set<T>::isSubsetOf(const Set<T> & other) const
 {
 
 }
-<template T> Set<T>::Set(T x)
+
+template <typename T> void Set<T>::insert(T x)
 {
 
 }
-<template T> Set<T>::~Set()
+template <typename T> void Set<T>::remove(T x)
 {
 
 }
-
-<template T> bool Set<T>::isEmpty()
+template <typename T> void Set<T>::insertInto(Set<T> & other) const
 {
 
 }
-<template T> std::ostream & Set<T>::flush(std::ostream & out) const
+template <typename T> void Set<T>::removeFrom(Set<T> & other) const
 {
 
 }
-
-<template T> bool Set<T>::contains(T x) const
+template <typename T> Set<T> & Set<T>::operator=(const Set & other)
 {
 
 }
-
-<template T> bool Set<T>::isSubsetOf(const Set<T> & other) const
-{
-
-}
-
-<template T> void Set<T>::insert(T x)
-{
-
-}
-<template T> void Set<T>::remove(T x)
-{
-
-}
-<template T> void Set<T>::insertInto(Set<T> & other) const
-{
-
-}
-<template T> void Set<T>::removeFrom(Set<T> & other) const
-{
-
-}
-<template T> Set<T> & Set<T>::operator=(const Set & other)
-{
-
-}
-<template T> Set<T>::Set(const Set<T> & other)
+template <typename T> Set<T>::Set(const Set<T> & other)
 {
 
 }
 
-<template T> Set<T>::Node * Set<T>::remove(Set<T>::Node * list, T x)
+template <typename T> typename Set<T>::Node * Set<T>::remove(Set<T>::Node * list, T x)
 {
 
 }
-*/
+
 #endif
