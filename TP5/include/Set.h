@@ -124,32 +124,76 @@ template <typename T> bool Set<T>::contains(T x) const
 
 template <typename T> bool Set<T>::isSubsetOf(const Set<T> & other) const
 {
-
+    Node * current = this->list;
+    Node * comparison = other.list;
+    while(comparison)
+    {
+      if(current->getValue() == comparison->getValue())
+      {
+        current = current->getNext();
+        if(!current)
+        {
+          return true;
+        }
+      }
+      comparison = comparison->getNext();
+    };
+    return false;
 }
 
 template <typename T> void Set<T>::insert(T x)
 {
-
+    if(!this->list)
+    {
+            this->list = new Node(x, nullptr);
+    }
+    else
+    {
+        Node * new_head = new Node(x, this->list);
+        this->list = new_head;
+    }
 }
 template <typename T> void Set<T>::remove(T x)
 {
-
+    list = remove(list, x);
 }
 template <typename T> void Set<T>::insertInto(Set<T> & other) const
 {
-
+    Node * current = this->list;
+    while(current)
+    {
+        other.insert(current->getValue());
+        current = current->getNext();
+    }
 }
 template <typename T> void Set<T>::removeFrom(Set<T> & other) const
 {
-
+    Node * current = this->list;
+    while(current)
+    {
+        other.remove(current->getValue());
+        current = current->getNext();
+    }
 }
 template <typename T> Set<T> & Set<T>::operator=(const Set & other)
 {
+    if(this == &other)
+    {
+            return *this;
+    }
+    other.insertInto(*this);
+    return *this;
 
 }
 template <typename T> Set<T>::Set(const Set<T> & other)
 {
-
+    if(other.list)
+    {
+        this->list = nullptr;
+        other.insertInto(*this);
+    } else {
+        list = nullptr;
+    }
 }
 
 template <typename T> typename Set<T>::Node * Set<T>::remove(Set<T>::Node * list, T x)
