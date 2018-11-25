@@ -1,6 +1,5 @@
 README.txt
 Makefile
-include/Matrix.h
-include/MatrixExceptions.h
-src/Matrix.cpp
-src/main.cpp
+include/SetOfDouble.h
+include/Set.h
+src/set_test.cpp

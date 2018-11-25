@@ -9,17 +9,19 @@ using namespace std;
 
 void part1();
 void part2();
+void part3();
 
 int main()
 {
 	int choice = 0;
-	std::cout << "Choisissez la partie (1, 2)\n";
-	std::cin >> choice;
+        cout << "Choisissez la partie (1, 2)\n";
+        cin >> choice;
 	
 	switch(choice)
 	{
 		case 1: part1(); break;
 		case 2: part2(); break; 
+                case 3: part3(); break;
 		default: break;
 	}
 }
@@ -43,7 +45,7 @@ void part1()
 	cout << "---Check subset\n";
 	SetOfDouble set2(9);
 	set2.insert(10);
-	set2.flush(cout);
+        cout << set2;
 	cout << "Set2 is subset of Set1? " << set2.isSubsetOf(set1) << endl;
 	SetOfDouble set3(11);
 	set3.flush(cout);
@@ -145,11 +147,11 @@ void part2()
         set4.insert(6);
 
 
-        set1.flush(cout);
-        set11.flush(cout);
-        set2.flush(cout);
-        set3.flush(cout);
-        set4.flush(cout);
+        cout << set1;
+        cout << set11;
+        cout << set2;
+        cout << set3;
+        cout << set4;
 
 	cout << "------Extra Functions------\n";
 	cout << "---Check equals and ==\n";
@@ -175,4 +177,31 @@ void part2()
             cout << "Set4 is bigger than Set2\n";
         }
 
+}
+
+void part3()
+{
+    SetOfDouble a(0);
+    a.insert(1);
+    a.insert(2);
+    a.insert(3);
+    a.insert(4);
+
+    SetOfDouble b(1);
+    b.insert(3);
+    b.insert(5);
+
+    cout << "A ";
+    cout << a;
+    cout << "B ";
+    cout << b;
+
+    cout << "a - b: " << a - b;
+    cout << "a + b: " << a + b;
+
+    cout << "b - a: " << b - a;
+    cout << "b + a: " << b + a;
+
+    cout << "a ^ b: " << (a ^ b);
+    cout << "a & b: " << (a & b);
 }

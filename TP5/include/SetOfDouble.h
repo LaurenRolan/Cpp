@@ -10,35 +10,93 @@
 
 #include <iostream>
 #include <ostream>
-#include <cstring>
-
-using namespace std;
 
 class SetOfDouble {
 
 public:
+  /**
+   * Construct an empty set
+   */
   SetOfDouble();
+
+  /**
+   * Construct a singleton
+   */
   inline SetOfDouble(double x);
+
   ~SetOfDouble();
 
   inline bool isEmpty();
 
+  /**
+   * Send all elements to an output stream.
+   *
+   * @param out An output stream
+   *
+   * @return the output stream parameter
+   */
   std::ostream & flush(std::ostream & out) const;
 
+  /**
+   * Check if an element belongs to the set
+   *
+   * @param x a double
+   *
+   * @return true if x belongs to the set
+   */
   bool contains(double x) const;
 
+  /**
+   * Check inclusion
+   *
+   * @param e a set
+   *
+   * @return true if this set is included in the set e
+   */
   bool isSubsetOf(const SetOfDouble & other) const;
 
+  /**
+   * Insert an element in the set
+   *
+   * @param x a double to be inserted
+   */
   void insert(double x);
 
+  /**
+   * Remove an element from the set
+   *
+   * @param x a double to be removed from the set
+   */
   void remove(double x);
 
+  /**
+   * Insert all elements into another set
+   *
+   * @param other another set
+   */
   void insertInto(SetOfDouble & other) const;
 
+  /**
+   * Remove this set from another set (i.e., other=other-this).
+   *
+   * @param other a set
+   */
   void removeFrom(SetOfDouble & other) const;
 
+  /**
+   * Assigment operator
+   *
+   * @param other a set
+   *
+   * @return a reference to this
+   */
   SetOfDouble & operator=(const SetOfDouble & other);
 
+  /**
+   * Copy constructor
+   *
+   * @param other a set
+   */
   SetOfDouble(const SetOfDouble & other);
 
 private:
@@ -57,258 +115,113 @@ private:
 
   Node * list;
 
+  /**
+   * Recursive method to remove first occurence of a double from a linked list
+   *
+   * @param list a linked list of nodes
+   * @param x an element to be removed
+   *
+   * @return the list without x
+   */
   static Node * remove(Node * list, double x);
 };
 
+/**
+ * Operator << for sets of doubles
+ *
+ * @param out an output stream
+ * @param s a set of doubles
+ *
+ * @return the output stream
+ */
 std::ostream & operator<<(std::ostream & out, const SetOfDouble & s);
 
-SetOfDouble singleton(double x)
-{
-  SetOfDouble n(x);
-  return n;
-}
+/**
+ * Create a singleton with a given element
+ *
+ * @param x a double
+ *
+ * @return the singleton {x}
+ */
+SetOfDouble singleton(double x);
 
-SetOfDouble emptySet()
-{
-  SetOfDouble n;
-  return n;
-}
+/**
+ * Create an empty set
+ *
+ * @return the empty set {}
+ */
+SetOfDouble emptySet();
 
-//Outsiders functions
-bool equals(const SetOfDouble & a, const SetOfDouble & b)
-{
-	if(a.isSubsetOf(b) && b.isSubsetOf(a))
-	{
-		return true;
-	}
-	return false;
-}
-bool operator==(const SetOfDouble & a, const SetOfDouble & b)
-{
-	if(a.isSubsetOf(b) && b.isSubsetOf(a))
-	{
-		return true;
-	}
-	return false;
-}
-bool operator<(const SetOfDouble & a, const SetOfDouble & b)
-{
-        if(a.isSubsetOf(b) && b.isSubsetOf(a)) {
-		return false;
-	} 
-        if(a.isSubsetOf(b)) {
-		return true;
-        }
-	return false;
-}
-bool operator>(const SetOfDouble & a, const SetOfDouble & b)
-{
-        if(a.isSubsetOf(b) && b.isSubsetOf(a)) {
-		return false;
-	} 
-        if(b.isSubsetOf(a)) {
-		return true;
-        }
-	return false;
-}
+/**
+ * Check if two sets are equal
+ *
+ * @param a a set
+ * @param b a set
+ *
+ * @return true if a=b (i.e., a is in b and b is in a), otherwise false
+ */
+bool equals(const SetOfDouble & a, const SetOfDouble & b);
+bool operator==(const SetOfDouble & a, const SetOfDouble & b);
+bool operator<(const SetOfDouble & a, const SetOfDouble & b);
+bool operator>(const SetOfDouble & a, const SetOfDouble & b);
 
+/**
+ * Union of two sets
+ *
+ * @param a a set
+ * @param b a set
+ *
+ * @return a union b.
+ */
 SetOfDouble set_union(const SetOfDouble & a, const SetOfDouble & b);
 SetOfDouble operator+(const SetOfDouble & a, const SetOfDouble & b);
 SetOfDouble operator|(const SetOfDouble & a, const SetOfDouble & b);
 
+/**
+ * Difference between two sets
+ *
+ * @param a a set
+ * @param b a set
+ *
+ * @return a minus b
+ */
 SetOfDouble difference(const SetOfDouble & a, const SetOfDouble & b);
 SetOfDouble operator-(const SetOfDouble & a, const SetOfDouble & b);
 
+/**
+ * Symmetric difference between two sets (XOR)
+ *
+ * @param a a set
+ * @param b a set
+ *
+ * @return (a minus b) union (b minus a)
+ */
 SetOfDouble symmetricDifference(const SetOfDouble & a, const SetOfDouble & b);
 SetOfDouble operator^(const SetOfDouble & a, const SetOfDouble & b);
 
+/**
+ * Intersection between two sets
+ *
+ * @param a a set
+ * @param b a set
+ *
+ * @return intersection between a and b
+ */
 SetOfDouble intersection(const SetOfDouble & a, const SetOfDouble & b);
 SetOfDouble operator&(const SetOfDouble & a, const SetOfDouble & b);
 
-
-//Node functions
-SetOfDouble::Node::Node(double value, Node * next)
-{
-	this->value = value;
-	this->next = next;
-}
-SetOfDouble::Node::~Node()
-{
-	delete next;
-}
-double SetOfDouble::Node::getValue() const
-{
-	return this->value;
-}
-SetOfDouble::Node * SetOfDouble::Node::getNext() const
-{
-	return this->next;
-}
-void SetOfDouble::Node::setNext(Node * next)
-{
-	this->next = next;
-}
-
-//SetOfDouble functions
-SetOfDouble::SetOfDouble()
-{
-  list = nullptr;
-}
+/*
+ * Definition of inline methods
+ */
 
 SetOfDouble::SetOfDouble(double x)
 {
-  list = new SetOfDouble::Node(x);
-}
-
-SetOfDouble::SetOfDouble(const SetOfDouble & other)
-{
-    if(other.list)
-    {
-        this->list = nullptr;
-        other.insertInto(*this);
-    } else {
-        list = nullptr;
-    }
-}
-
-SetOfDouble::~SetOfDouble()
-{
-  delete list;
+  // To be completed
 }
 
 bool SetOfDouble::isEmpty()
 {
-  if(list) {  
-    return true;
-  }
-  return false;
-
-}
-
-bool SetOfDouble::contains(double x) const
-{
-  Node * current = this->list;
-  while(current)
-  {
-    if(current->getValue() == x)
-    {
-      return true;
-    }
-    current = current->getNext();
-  };
-  return false;
-}
-
-bool SetOfDouble::isSubsetOf(const SetOfDouble & other) const
-{
-  Node * current = this->list;
-  Node * comparison = other.list;
-  while(comparison)
-  {
-    if(current->getValue() == comparison->getValue())
-    {
-      current = current->getNext();
-      if(!current)
-      {
-        return true;
-      }
-    }
-    comparison = comparison->getNext();
-  };
-  return false;
-}
-
-void SetOfDouble::insert(double x)
-{
-	if(!this->list)
-	{
-		this->list = new Node(x, nullptr);
-	}
-        else
-        {
-            Node * new_head = new Node(x, this->list);
-            this->list = new_head;
-        }
-}
-
-void SetOfDouble::remove(double x)
-{
-
-    list = remove(list, x);
-}
-
-SetOfDouble::Node * SetOfDouble::remove(Node *list, double x)
-{
-    if(!list)
-    {
-        return list;
-    }
-    Node * current = list;
-    Node * before = nullptr;
-    while(current)
-    {
-        if(current->getValue() == x)
-        {
-            if(before)
-            {
-                before->setNext(current->getNext());
-            } else {
-                list = current->getNext();
-            }
-            current->setNext(nullptr);
-            delete current;
-            return list;
-        }
-        before = current;
-        current = current->getNext();
-    }
-    return list;
-}
-
-
-void SetOfDouble::insertInto(SetOfDouble & other) const
-{
-	Node * current = this->list;
-	while(current)
-	{
-		other.insert(current->getValue());
-		current = current->getNext();
-	}
-}
-
-void SetOfDouble::removeFrom(SetOfDouble & other) const
-{
-	Node * current = this->list;
-	while(current)
-	{
-		other.remove(current->getValue());
-		current = current->getNext();
-	}
-}
-
-SetOfDouble & SetOfDouble::operator=(const SetOfDouble & other)
-{
-	if(this == &other)
-	{
-		return *this;
-	}
-        other.insertInto(*this);
-	return *this;
-}
-
-std::ostream & SetOfDouble::flush(std::ostream & out) const
-{
-	out << "{ ";
-	for(Node * current = this->list; current; current = current->getNext())
-	{
-		out << current->getValue();
-		if(current->getNext())
-		{
-			out << ", ";
-		}
-	}
-	out << " }\n";
-	return out;
+  // To be completed
 }
 
 #endif // SETOFDOUBLE_H
