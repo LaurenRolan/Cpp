@@ -9,6 +9,7 @@ using namespace std;
 
 int main(int, char *[])
 {
+    /* Exercice 2 -- taille et capacite d'un vecteur */
     vector<int> v;
     for(int i = 0; i < 3000; i++)
     {
