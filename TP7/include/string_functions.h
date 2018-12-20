@@ -1,6 +1,9 @@
 /* Author: Lauren Rolan
  * File: string_functions.h
  */
+#ifndef STRING_FUNCTIONS_H
+#define STRING_FUNCTIONS_H
+
 #include <iostream> //Debug
 #include <vector>
 #include <cstring>
@@ -50,3 +53,4 @@ vector<string> split(string text, string separator)
     results.push_back(current);
     return results;
 }
+#endif

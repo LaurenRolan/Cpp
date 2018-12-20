@@ -7,21 +7,51 @@
 #include <ios>
 #include <string>
 #include <vector>
+#include "City.h"
 
 using namespace std;
 
 void test_prefix();
 void test_sufix();
 void test_split();
+void test_city_creation();
+void test_city_file();
 vector<int> fill_vector(int min, int max);
 
 int main()
 {
+    /*
     test_prefix();
     test_sufix();
     test_split();
-
+    */
+    test_city_creation();
+    test_city_file();
     return 0;
+}
+
+void test_city_file()
+{
+    vector<City> cities;
+    cities = getCities("communes.csv");
+    cout << cities.front();
+}
+
+void test_city_creation()
+{
+    City a;
+    a.setINSEE("testINSEE");
+    a.setNom_commune("testCommune");
+    a.setCode_postal("00000");
+    a.setPopulation("1.000.000");
+    a.setCoordonnees_GPS("12.36,12.36");
+
+    cout << a.getINSEE() << endl;
+    cout << a.getNom_commune() << endl;
+    cout << a.getCode_postal() << endl;
+    cout << a.getPopulation() << endl;
+    cout << a.getCoordonnees_GPS() << endl;
+    cout << a;
 }
 
 void test_prefix()
