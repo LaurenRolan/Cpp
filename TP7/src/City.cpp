@@ -102,9 +102,12 @@ predicat isInMetropole()
 	};
 }
 
-vector<City> & filter(vector<City> & cities, predicat function)
+vector<City> filter(vector<City> & cities, predicat function)
 {
 	vector<City> result;
+
+	//Utiliser foreach
+
 	for(City city : cities)
 	{
 		if(function(city))

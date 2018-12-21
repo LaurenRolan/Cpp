@@ -46,6 +46,6 @@ typedef std::function<bool(const City &)> predicat;
 predicat isInFrance();
 predicat isInMetropole();
 
-vector<City> & filter(vector<City> & cities, predicat function);
+vector<City> filter(vector<City> & cities, predicat function);
 
 #endif

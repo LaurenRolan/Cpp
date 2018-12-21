@@ -16,6 +16,8 @@ void test_sufix();
 void test_split();
 void test_city_creation();
 void test_city_file();
+int get_population(const vector<City> & cities);
+
 vector<int> fill_vector(int min, int max);
 
 int main()
@@ -27,6 +29,12 @@ int main()
     test_city_creation();
     */
     test_city_file();
+    return 0;
+}
+
+int get_population(const vector<City> & cities)
+{
+    //TODO
     return 0;
 }
 
