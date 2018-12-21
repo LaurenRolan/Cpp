@@ -37,6 +37,6 @@ class City {
 };
 
 ostream & operator<<(ostream & os, const City & city);
-const vector<City> & getCities(string fileName);
+void getCities(string fileName, vector<City> & result);
 
 #endif

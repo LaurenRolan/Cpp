@@ -69,14 +69,16 @@ ostream & operator<<(ostream & os, const City & city)
 	return os;
 }
 
-const vector<City> & getCities(string fileName)
+void getCities(string fileName, std::vector<City> & result)
 {
-	vector<City> result;
 	ifstream file(fileName);
 	string line;
 	getline(file, line);
+	std::cout << line; 
+
 	while(getline(file, line))
 	{
+		std::cout << line; 
 		vector<string> city_info = split(line, ",");
 		City current;
 		auto it = city_info.begin();
@@ -87,5 +89,4 @@ const vector<City> & getCities(string fileName)
 		current.setPopulation(*it++);
 		result.push_back(current);
 	}
-	return result;
 }

@@ -24,8 +24,8 @@ int main()
     test_prefix();
     test_sufix();
     test_split();
-    */
     test_city_creation();
+    */
     test_city_file();
     return 0;
 }
@@ -33,7 +33,8 @@ int main()
 void test_city_file()
 {
     vector<City> cities;
-    cities = getCities("communes.csv");
+    std::cout << "Vecteur cree\n";
+    getCities("communes.csv", cities);
     cout << cities.front();
 }
 
