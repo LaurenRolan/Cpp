@@ -35,7 +35,15 @@ void test_city_file()
     vector<City> cities;
     std::cout << "Vecteur cree\n";
     getCities("communes.csv", cities);
-    cout << cities.front();
+    predicat isFrench = isInFrance();
+    predicat isMetropole = isInMetropole();
+    cout << isFrench(cities.front()) << " " << isMetropole(cities.front()) << endl;
+    vector<City> metropolitan = filter(cities, isMetropole);
+    for(City city : metropolitan)
+    {
+        cout << city;
+    }
+
 }
 
 void test_city_creation()
@@ -45,13 +53,13 @@ void test_city_creation()
     a.setNom_commune("testCommune");
     a.setCode_postal("00000");
     a.setPopulation("1.000.000");
-    a.setCoordonnees_GPS("12.36,12.36");
+    a.setCoordonnees_GPS(make_pair(12.36,12.36));
 
     cout << a.getINSEE() << endl;
     cout << a.getNom_commune() << endl;
     cout << a.getCode_postal() << endl;
     cout << a.getPopulation() << endl;
-    cout << a.getCoordonnees_GPS() << endl;
+    cout << a.getCoordonnees_GPS().first << " , " << a.getCoordonnees_GPS().second << endl;
     cout << a;
 }
 

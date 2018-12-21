@@ -2,9 +2,8 @@
  * File: City.cpp
  */
 #include "City.h"
-#include "string_functions.h" //probleme ici
+#include "string_functions.h"
 #include <fstream>
-#include <vector>
 
 City::City(City && other)
 {
@@ -48,13 +47,13 @@ string City::getINSEE() const { return INSEE; }
 string City::getNom_commune() const { return nom_commune; }
 string City::getCode_postal() const { return code_postal; }
 string City::getPopulation() const { return population; }
-string City::getCoordonnees_GPS() const { return coordonnees_GPS; }
+pair<double, double> City::getCoordonnees_GPS() const { return coordonnees_GPS; }
 
 void City::setINSEE(const string & newINSEE) { INSEE = newINSEE; }
 void City::setNom_commune(const string & newNom_commune) { nom_commune = newNom_commune; }
 void City::setCode_postal(const string & newCode_postal) { code_postal = newCode_postal; }
 void City::setPopulation(const string & newPopulation) { population = newPopulation; }
-void City::setCoordonnees_GPS(const string & newCoordonnees_GPS) { coordonnees_GPS = newCoordonnees_GPS; }
+void City::setCoordonnees_GPS(const pair<double, double> & newCoordonnees_GPS) { coordonnees_GPS = newCoordonnees_GPS; }
 
 ostream & operator<<(ostream & os, const City & city)
 {
@@ -63,7 +62,8 @@ ostream & operator<<(ostream & os, const City & city)
 	os << "\t--Commune: " << city.getNom_commune();
 	os << endl;
 	os << "--Population: " << city.getPopulation();
-	os << "\t--Coordonnees: " << city.getCoordonnees_GPS();
+	os << "\t--Coordonnees: " << city.getCoordonnees_GPS().first << " , ";
+	os << city.getCoordonnees_GPS().second;
 	os << endl;
 	os << "--Code postal: " << city.getCode_postal() << endl;
 	return os;
@@ -71,22 +71,46 @@ ostream & operator<<(ostream & os, const City & city)
 
 void getCities(string fileName, std::vector<City> & result)
 {
-	ifstream file(fileName);
+	ifstream fileStream(fileName);
 	string line;
-	getline(file, line);
-	std::cout << line; 
-
-	while(getline(file, line))
+	getline(fileStream, line);
+	while(getline(fileStream, line))
 	{
-		std::cout << line; 
-		vector<string> city_info = split(line, ",");
+		vector<string> city_info = split(line, ";");
 		City current;
 		auto it = city_info.begin();
 		current.setINSEE(*it++);
 		current.setNom_commune(*it++);
 		current.setCode_postal(*it++);
-		current.setCoordonnees_GPS(*it++);
+		string coordonnees = *it++;
+		vector<string> gps = split(coordonnees, ", ");
+		current.setCoordonnees_GPS(make_pair(std::stod(gps.front()), std::stod(gps.back())));
 		current.setPopulation(*it++);
 		result.push_back(current);
 	}
+}
+
+predicat isInFrance()
+{
+	return [](const City &) { return true; };
+}
+
+predicat isInMetropole()
+{
+	return [](const City & c) { 
+		return (c.getCoordonnees_GPS().first >= 40 && c.getCoordonnees_GPS().first <= 55); 
+	};
+}
+
+vector<City> & filter(vector<City> & cities, predicat function)
+{
+	vector<City> result;
+	for(City city : cities)
+	{
+		if(function(city))
+		{
+			result.push_back(city);
+		}
+	}
+	return result;
 }
