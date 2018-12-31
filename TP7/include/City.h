@@ -38,14 +38,23 @@ class City {
  		
 };
 
-ostream & operator<<(ostream & os, const City & city);
-void getCities(string fileName, vector<City> & result);
+typedef struct {
+	double max_latitude;
+	double min_latitude;
+	double max_longitude;
+	double min_longitude;
+} BoundingBox;
 
 typedef std::function<bool(const City &)> predicat;
+
+ostream & operator<<(ostream & os, const City & city);
+void getCities(string fileName, vector<City> & result);
 
 predicat isInFrance();
 predicat isInMetropole();
 
-vector<City> filter(vector<City> & cities, predicat function);
+vector<City> * filter(const vector<City> & cities, predicat function);
+int get_population(const vector<City> & cities);
+BoundingBox get_bounding_box(const vector<City> & cities);
 
 #endif

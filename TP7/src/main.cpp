@@ -1,13 +1,14 @@
 /* Author: Lauren Rolan
- * File: string_functions.cpp
+ * File: main.cpp
  */
-
-#include "string_functions.h"
 #include <iostream>
 #include <ios>
 #include <string>
 #include <vector>
+
 #include "City.h"
+#include "string_functions.h"
+#include "map.h"
 
 using namespace std;
 
@@ -16,6 +17,8 @@ void test_sufix();
 void test_split();
 void test_city_creation();
 void test_city_file();
+void test_map_functions();
+
 int get_population(const vector<City> & cities);
 
 vector<int> fill_vector(int min, int max);
@@ -27,15 +30,30 @@ int main()
     test_sufix();
     test_split();
     test_city_creation();
-    */
     test_city_file();
+	*/
+	test_map_functions();
     return 0;
 }
 
-int get_population(const vector<City> & cities)
+void test_map_functions()
 {
-    //TODO
-    return 0;
+	vector<City> cities;
+    std::cout << "Vecteur cree\n";
+    getCities("communes.csv", cities);
+	
+	vector<City> * commune = filter(cities, [](const City & c){
+							if(c.getINSEE().find("14") == 0)
+								return true;
+							return false;});
+							
+	BoundingBox bb = get_bounding_box((*commune));
+	
+	cout << "Latitude:\t" << bb.max_latitude << "\t...\t" << bb.min_latitude << endl;
+	cout << "Longitude:\t" << bb.max_longitude << "\t...\t" << bb.min_longitude << endl;
+	
+	cout << "Testing get pixels:" << endl;
+	cout << height_in_pixels(bb, 100);
 }
 
 void test_city_file()
@@ -46,12 +64,20 @@ void test_city_file()
     predicat isFrench = isInFrance();
     predicat isMetropole = isInMetropole();
     cout << isFrench(cities.front()) << " " << isMetropole(cities.front()) << endl;
-    vector<City> metropolitan = filter(cities, isMetropole);
-    for(City city : metropolitan)
-    {
-        cout << city;
-    }
-
+	vector<City> * metropolitan = filter(cities, isMetropole);
+	
+	cout << get_population(cities) << endl;
+	vector<City> * commune = filter(cities, [](const City & c){
+							if(c.getINSEE().find("14") == 0)
+								return true;
+							return false;});
+	for(City c : * commune)
+	{
+		cout << c << endl;
+	}
+	BoundingBox bb = get_bounding_box((*commune));
+	cout << "Latitude:\t" << bb.max_latitude << "\t...\t" << bb.min_latitude << endl;
+	cout << "Longitude:\t" << bb.max_longitude << "\t...\t" << bb.min_longitude << endl;
 }
 
 void test_city_creation()

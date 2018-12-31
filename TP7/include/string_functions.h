@@ -4,7 +4,6 @@
 #ifndef STRING_FUNCTIONS_H
 #define STRING_FUNCTIONS_H
 
-#include <iostream> //Debug
 #include <vector>
 #include <cstring>
 

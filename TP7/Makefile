@@ -1,4 +1,4 @@
-EXE = echauf
+EXE = main
 
 CC = g++
 SRC_DIR = src

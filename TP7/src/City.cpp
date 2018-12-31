@@ -4,6 +4,9 @@
 #include "City.h"
 #include "string_functions.h"
 #include <fstream>
+#include <algorithm>
+#include <numeric>
+#include <iterator>
 
 City::City(City && other)
 {
@@ -102,18 +105,44 @@ predicat isInMetropole()
 	};
 }
 
-vector<City> filter(vector<City> & cities, predicat function)
+vector<City> * filter(const vector<City> & cities, predicat function)
 {
-	vector<City> result;
-
-	//Utiliser foreach
-
-	for(City city : cities)
-	{
-		if(function(city))
-		{
-			result.push_back(city);
-		}
-	}
+	vector<City> * result = new vector<City>;
+	for_each(cities.begin(), cities.end(), 
+							[result, function](const City & c) {
+								if(function(c))
+								{
+									result->push_back(c);
+							}});
 	return result;
+}
+
+int get_population(const vector<City> & cities)
+{
+	vector<int> population;
+    transform(cities.begin(), cities.end(), back_inserter(population),
+                   [](const City & c) -> int {
+					   if(c.getCoordonnees_GPS().second <= 0)
+					   { return stoi(c.getPopulation()); }
+					   return 0;
+					   });
+    int sum = accumulate(population.begin(), population.end(), 0);
+	return sum;
+}
+
+BoundingBox get_bounding_box(const vector<City> & cities)
+{
+	BoundingBox bb;
+	
+	bb.max_latitude = (*max_element(cities.begin(), cities.end(), [](const City & a, const City & b) -> bool
+								{return a.getCoordonnees_GPS().first < b.getCoordonnees_GPS().first;})).getCoordonnees_GPS().first;
+	bb.min_latitude = (*min_element(cities.begin(), cities.end(), [](const City & a, const City & b) -> bool
+								{return a.getCoordonnees_GPS().first < b.getCoordonnees_GPS().first;})).getCoordonnees_GPS().first;
+								
+	bb.max_longitude = (*max_element(cities.begin(), cities.end(), [](const City & a, const City & b) -> bool
+								{return a.getCoordonnees_GPS().second < b.getCoordonnees_GPS().second;})).getCoordonnees_GPS().second;
+	bb.min_longitude = (*min_element(cities.begin(), cities.end(), [](const City & a, const City & b) -> bool
+								{return a.getCoordonnees_GPS().second < b.getCoordonnees_GPS().second;})).getCoordonnees_GPS().second;
+
+	return bb;
 }

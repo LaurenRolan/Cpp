@@ -25,6 +25,7 @@ int main(int argc, char ** argv)
         return 1;
     }
 
+	cout << "Question a) -- utiliser ensemble.\n";
     set<char> counter;
     ifstream file(argv[1]);
 
@@ -39,6 +40,7 @@ int main(int argc, char ** argv)
 
     file.close();
 
+	cout << "Question b) -- affichage de caracteres\n";
     cout << "Caracteres dans " << argv[1] << endl;
     set<char>::iterator it = counter.begin();
     while(it != counter.end())
