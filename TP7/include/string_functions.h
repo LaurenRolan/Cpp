@@ -5,7 +5,7 @@
 #define STRING_FUNCTIONS_H
 
 #include <vector>
-#include <cstring>
+#include <string>
 
 using namespace std;
 

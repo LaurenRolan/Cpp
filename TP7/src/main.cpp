@@ -9,6 +9,7 @@
 #include "City.h"
 #include "string_functions.h"
 #include "map.h"
+#include "RGBImage.h"
 
 using namespace std;
 
@@ -18,12 +19,16 @@ void test_split();
 void test_city_creation();
 void test_city_file();
 void test_map_functions();
+void france(string outputFile);
+void metro(string outputFile);
+void single(string outputFile);
+void city(string outputFile);
 
 int get_population(const vector<City> & cities);
 
 vector<int> fill_vector(int min, int max);
 
-int main()
+int main(int argc, char** argv)
 {
     /*
     test_prefix();
@@ -31,15 +36,73 @@ int main()
     test_split();
     test_city_creation();
     test_city_file();
-	*/
 	test_map_functions();
+	*/
+	if(argc > 2)
+	{
+		string choice = argv[1];
+		string outputFile = argv[2];
+		
+		if(isSufix(choice, "france"))
+		{
+			france(outputFile);
+		} 
+		else if(isSufix(choice, "metro"))
+		{
+			metro(outputFile);
+		}
+		else if(isSufix(choice, "city"))
+		{
+			city(outputFile);
+		}
+		else if(isSufix(choice, "single"))
+		{
+			single(outputFile);
+		}
+	}
+	else { exit(0); }
     return 0;
+}
+
+
+void france(string outputFile)
+{
+	vector<City> cities;
+    getCities("communes.csv", cities);
+	BoundingBox bb = get_bounding_box(cities);
+	RGBImage france(300, 300);
+	france.fill(100);
+	drawing draw = draw_village(bb);
+	draw_village_vector(france, cities, false, draw);
+	france.savePPM(outputFile);
+}
+void metro(string outputFile)
+{
+	vector<City> cities;
+    getCities("communes.csv", cities);
+	
+	predicat get_metropole = isInMetropole();
+	vector<City> * commune = filter(cities, get_metropole);
+	BoundingBox bb = get_bounding_box((*commune));
+	
+	RGBImage france(300, 300);
+	france.fill(100);
+	drawing draw = draw_village(bb);
+	draw_village_vector(france, cities, true, draw);
+	france.savePPM(outputFile);
+}
+void single(string outputFile)
+{
+	
+}
+void city(string outputFile)
+{
+	
 }
 
 void test_map_functions()
 {
 	vector<City> cities;
-    std::cout << "Vecteur cree\n";
     getCities("communes.csv", cities);
 	
 	vector<City> * commune = filter(cities, [](const City & c){
@@ -52,8 +115,28 @@ void test_map_functions()
 	cout << "Latitude:\t" << bb.max_latitude << "\t...\t" << bb.min_latitude << endl;
 	cout << "Longitude:\t" << bb.max_longitude << "\t...\t" << bb.min_longitude << endl;
 	
-	cout << "Testing get pixels:" << endl;
-	cout << height_in_pixels(bb, 100);
+	cout << "Testing get pixels:  ";
+	cout << height_in_pixels(bb, 100) << endl;
+	
+	convertion find_middle = coordinates_to_pixels(bb, make_pair(100, 100));
+	pair<int, int> pixel = find_middle(make_pair(49.1015, -0.35321));
+	cout << pixel.first << " x " << pixel.second << endl;
+	
+	RGBImage img(100, 80);
+	drawing ville = draw_village(bb);
+	ville(commune->front(), make_pair(100, 100), img);
+	ville(commune->back(), make_pair(100, 100), img);
+	img.savePPM("teste.ppm");
+	
+	
+	BoundingBox bb2 = get_bounding_box(cities);
+	RGBImage france(300, 300);
+	const int width = france.width();
+	const int height = france.height();
+	cout << width << "  " << height << endl;
+	drawing draw = draw_village(bb2);
+	draw_village_vector(france, cities, false, draw);
+	france.savePPM("villes.ppm");
 }
 
 void test_city_file()
