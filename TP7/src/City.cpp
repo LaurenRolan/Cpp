@@ -105,6 +105,15 @@ predicat isInMetropole()
 	};
 }
 
+predicat isInDep(string dep)
+{
+	return [dep](const City & c){
+		if(c.getINSEE().find(dep) == 0)
+			return true;
+		return false;
+	};
+}
+
 vector<City> * filter(const vector<City> & cities, predicat function)
 {
 	vector<City> * result = new vector<City>;
@@ -145,4 +154,17 @@ BoundingBox get_bounding_box(const vector<City> & cities)
 								{return a.getCoordonnees_GPS().second < b.getCoordonnees_GPS().second;})).getCoordonnees_GPS().second;
 
 	return bb;
+}
+
+string get_department(const vector<City> & cities, string name)
+{
+	string dep;
+	for(City city : cities)
+	{
+		if(city.getNom_commune() == name)
+		{
+			dep = city.getINSEE().substr(0, 2);
+		}
+	}
+	return dep;
 }

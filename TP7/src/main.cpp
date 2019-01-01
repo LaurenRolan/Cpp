@@ -5,6 +5,7 @@
 #include <ios>
 #include <string>
 #include <vector>
+#include <algorithm>
 
 #include "City.h"
 #include "string_functions.h"
@@ -22,7 +23,7 @@ void test_map_functions();
 void france(string outputFile);
 void metro(string outputFile);
 void single(string outputFile);
-void city(string outputFile);
+void city(string name, string outputFile);
 
 int get_population(const vector<City> & cities);
 
@@ -41,23 +42,22 @@ int main(int argc, char** argv)
 	if(argc > 2)
 	{
 		string choice = argv[1];
-		string outputFile = argv[2];
 		
 		if(isSufix(choice, "france"))
 		{
-			france(outputFile);
+			france(argv[2]);
 		} 
 		else if(isSufix(choice, "metro"))
 		{
-			metro(outputFile);
+			metro(argv[2]);
 		}
 		else if(isSufix(choice, "city"))
 		{
-			city(outputFile);
+			city(argv[2], argv[3]);
 		}
 		else if(isSufix(choice, "single"))
 		{
-			single(outputFile);
+			single(argv[2]);
 		}
 	}
 	else { exit(0); }
@@ -70,10 +70,9 @@ void france(string outputFile)
 	vector<City> cities;
     getCities("communes.csv", cities);
 	BoundingBox bb = get_bounding_box(cities);
-	RGBImage france(300, 300);
-	france.fill(100);
-	drawing draw = draw_village(bb);
-	draw_village_vector(france, cities, false, draw);
+	RGBImage france(1024, 300);
+	drawing draw = draw_village();
+	draw_village_vector(france, cities, true, draw, bb);
 	france.savePPM(outputFile);
 }
 void metro(string outputFile)
@@ -82,22 +81,59 @@ void metro(string outputFile)
     getCities("communes.csv", cities);
 	
 	predicat get_metropole = isInMetropole();
-	vector<City> * commune = filter(cities, get_metropole);
-	BoundingBox bb = get_bounding_box((*commune));
+	vector<City> * metropole = filter(cities, get_metropole);
+	BoundingBox bb = get_bounding_box(*metropole);
 	
-	RGBImage france(300, 300);
-	france.fill(100);
-	drawing draw = draw_village(bb);
-	draw_village_vector(france, cities, true, draw);
+	RGBImage france(1024, 300);
+	drawing draw = draw_village();
+	draw_village_vector(france, *metropole, true, draw, bb);
 	france.savePPM(outputFile);
 }
+
 void single(string outputFile)
 {
+	vector<City> cities;
+    getCities("communes.csv", cities);
 	
+	predicat get_metropole = isInMetropole();
+	vector<City> * metropole = filter(cities, get_metropole);
+	BoundingBox bb = get_bounding_box(*metropole);
+	
+	RGBImage france(1024, 300);
+	draw_village_vector(france, *metropole, true, 
+		[] (const City & city, pair<int, int> size, RGBImage & img, BoundingBox bb) {
+			convertion get_coord = coordinates_to_pixels(bb, size);
+			pair<int, int> coord = get_coord(city.getCoordonnees_GPS());
+			if(city.getNom_commune().find(" ") ==  string::npos) //N'a pas trouve
+			{
+				img.drawCircle(coord.first, coord.second, 1, 219, 63, 63); //Rouge
+			} else {
+				img.drawCircle(coord.first, coord.second, 1, 101, 216, 97); //Vert
+			}
+		}, bb);
+	france.savePPM(outputFile);
 }
-void city(string outputFile)
+
+void city(string name, string outputFile)
 {
+	vector<City> cities;
+    getCities("communes.csv", cities);
 	
+	predicat get_metropole = isInMetropole();
+	vector<City> * metropole = filter(cities, get_metropole);
+	BoundingBox bb = get_bounding_box(*metropole);
+	
+	string name_in_upper;
+	transform(name.begin(), name.end(), back_inserter(name_in_upper), ::toupper);
+	string dep = get_department(*metropole, name_in_upper);
+	
+	predicat get_department = isInDep(dep);
+	vector<City> * department = filter(cities, get_department);
+	
+	drawing draw = draw_department(name_in_upper);
+	RGBImage france(1024, 300);
+	draw_village_vector(france, *department, false, draw, bb);
+	france.savePPM(outputFile);
 }
 
 void test_map_functions()
@@ -123,9 +159,9 @@ void test_map_functions()
 	cout << pixel.first << " x " << pixel.second << endl;
 	
 	RGBImage img(100, 80);
-	drawing ville = draw_village(bb);
-	ville(commune->front(), make_pair(100, 100), img);
-	ville(commune->back(), make_pair(100, 100), img);
+	drawing ville = draw_village();
+	ville(commune->front(), make_pair(100, 100), img, bb);
+	ville(commune->back(), make_pair(100, 100), img, bb);
 	img.savePPM("teste.ppm");
 	
 	
@@ -134,8 +170,8 @@ void test_map_functions()
 	const int width = france.width();
 	const int height = france.height();
 	cout << width << "  " << height << endl;
-	drawing draw = draw_village(bb2);
-	draw_village_vector(france, cities, false, draw);
+	drawing draw = draw_village();
+	draw_village_vector(france, cities, false, draw, bb2);
 	france.savePPM("villes.ppm");
 }
 

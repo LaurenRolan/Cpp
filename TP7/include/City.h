@@ -39,10 +39,10 @@ class City {
 };
 
 typedef struct {
-	double max_latitude;
-	double min_latitude;
-	double max_longitude;
-	double min_longitude;
+	double max_latitude  =   90;
+	double min_latitude  =  -90;
+	double max_longitude =  180;
+	double min_longitude = -180;
 } BoundingBox;
 
 typedef std::function<bool(const City &)> predicat;
@@ -52,7 +52,9 @@ void getCities(string fileName, vector<City> & result);
 
 predicat isInFrance();
 predicat isInMetropole();
+predicat isInDep(string dep);
 
+string get_department(const vector<City> & cities, string name);
 vector<City> * filter(const vector<City> & cities, predicat function);
 int get_population(const vector<City> & cities);
 BoundingBox get_bounding_box(const vector<City> & cities);

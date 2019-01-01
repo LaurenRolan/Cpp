@@ -44,11 +44,11 @@ convertion coordinates_to_pixels(BoundingBox bb, pair<int, int> taille)
 	};
 }
 
-drawing draw_village(BoundingBox bb)
+drawing draw_village()
 {
-	return [bb] (const City & c, pair<int, int> p, RGBImage & img) {
-		convertion get_coord = coordinates_to_pixels(bb, p);
-		pair<int, int> coord = get_coord(c.getCoordonnees_GPS());
+	return [] (const City & city, pair<int, int> size, RGBImage & img, BoundingBox bb) {
+		convertion get_coord = coordinates_to_pixels(bb, size);
+		pair<int, int> coord = get_coord(city.getCoordonnees_GPS());
 		img.drawCircle(coord.first, coord.second, 1, 10, 25, 40);
 	};
 
@@ -56,27 +56,46 @@ drawing draw_village(BoundingBox bb)
 
 drawing draw_circle(unsigned char r, unsigned char g, unsigned char b, int ray)
 {
-	return [r,g,b,ray] (const City & c, pair<int, int> p, RGBImage & img) {
-		img.drawCircle(p.first, p.second, ray, r, g, b);
-		img.fillCircle(p.first, p.second, ray, r, g, b);
+	return [r,g,b,ray] (const City & c, pair<int, int> p, RGBImage & img, BoundingBox bb) {
+		convertion get_coord = coordinates_to_pixels(bb, p);
+		pair<int, int> coord = get_coord(c.getCoordonnees_GPS());
+		img.drawCircle(coord.first, coord.second, ray, r, g, b);
+		img.fillCircle(coord.first, coord.second, ray, r, g, b);
+		cout << "Boo" << endl;
 	};
 }
 
-void draw_village_vector(RGBImage & img, const vector<City> & cities, bool tight, drawing draw)
+drawing draw_department(string name)
 {
-	BoundingBox bb;
+	return [name] (const City & c, pair<int, int> p, RGBImage & img, BoundingBox bb) {
+		convertion get_coord = coordinates_to_pixels(bb, p);
+		pair<int, int> coord = get_coord(c.getCoordonnees_GPS());
+		drawing draw;
+		if(name == c.getNom_commune())
+		{
+			draw = draw_circle(50, 100, 200, 5);
+		} else {
+			draw = draw_village();
+		}
+		draw(c, p, img, bb);
+	};
+}
+
+void draw_village_vector(RGBImage & img, const vector<City> & cities, bool tight, drawing draw, BoundingBox bb)
+{
 	if(tight)
 	{
-		bb.max_latitude =   90;
-		bb.min_latitude =  -90;
-		bb.max_longitude =  180;
-		bb.min_longitude = -180;
-	} else {
 		bb = get_bounding_box(cities);
 	}
 	
+	int width = img.width();
+	int height = height_in_pixels(bb, width);
+	
+	img.resize(width, height);
+	img.fill(100);
+	
 	for(City city : cities)
 	{
-		draw(city, make_pair(img.width(), img.height()), img);
+		draw(city, make_pair(width, height), img, bb);
 	}
 }
