@@ -109,7 +109,15 @@ drawing draw_all_villes()
 	};
 }
 
-
+drawing draw_population( pair<int, int> limits )
+{
+	return [limits] (const City & c, pair<int, int> p, RGBImage & img, BoundingBox bb)
+	{
+		double population = normalize((double) limits.first, (double) limits.second, stod(c.getPopulation()));
+		drawing draw = draw_village(265 * population, 265 - 265 * population, 100);
+		draw(c, p, img, bb);
+	};
+}
 
 void draw_village_vector(RGBImage & img, const vector<City> & cities, bool tight, drawing draw, BoundingBox bb)
 {

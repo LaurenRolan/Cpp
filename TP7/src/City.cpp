@@ -168,3 +168,13 @@ string get_department(const vector<City> & cities, string name)
 	}
 	return dep;
 }
+
+pair<int, int> get_max_min_population(const vector<City> & cities)
+{
+	int max_value, min_value;
+	max_value = stoi((*max_element(cities.begin(), cities.end(), [](const City & a, const City & b) -> bool
+								{return stoi(a.getPopulation()) < stoi(b.getPopulation());})).getPopulation());
+	min_value = stoi((*min_element(cities.begin(), cities.end(), [](const City & a, const City & b) -> bool
+								{return stoi(a.getPopulation()) < stoi(b.getPopulation());})).getPopulation());
+	return make_pair(max_value, min_value);
+}

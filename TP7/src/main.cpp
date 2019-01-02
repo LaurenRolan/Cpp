@@ -79,7 +79,21 @@ int main(int argc, char** argv)
 
 void pop(string outputFile)
 {
+	map<int, unsigned int> colors;
+	vector<City> cities;
+    getCities("communes.csv", cities);
 	
+	predicat get_metropole = isInMetropole();
+	vector<City> * metropole = filter(cities, get_metropole);
+	BoundingBox bb = get_bounding_box(*metropole);
+	
+	pair<int, int> limits = get_max_min_population(*metropole);
+	
+	drawing draw = draw_population(limits);
+	
+	RGBImage france(1024, 300);
+	draw_village_vector(france, cities, false, draw, bb);
+	france.savePPM(outputFile);
 }
 
 void ville(string outputFile)

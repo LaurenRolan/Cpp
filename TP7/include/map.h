@@ -21,6 +21,7 @@ drawing draw_department(string dep);
 drawing draw_circle(unsigned char r, unsigned char g, unsigned char b, int ray);
 drawing draw_all_deps(map<int, unsigned int> & colors);
 drawing draw_all_villes();
+drawing draw_population( pair<int, int> limits );
 
 void draw_village_vector(RGBImage & img, const vector<City> & cities, bool tight, drawing draw, BoundingBox bb);
 

@@ -57,6 +57,7 @@ predicat isInDep(string dep);
 string get_department(const vector<City> & cities, string name);
 vector<City> * filter(const vector<City> & cities, predicat function);
 int get_population(const vector<City> & cities);
+pair<int, int> get_max_min_population(const vector<City> & cities);
 BoundingBox get_bounding_box(const vector<City> & cities);
 
 #endif
