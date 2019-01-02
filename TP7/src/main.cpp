@@ -6,6 +6,7 @@
 #include <string>
 #include <vector>
 #include <algorithm>
+#include <map>
 
 #include "City.h"
 #include "string_functions.h"
@@ -24,6 +25,9 @@ void france(string outputFile);
 void metro(string outputFile);
 void single(string outputFile);
 void city(string name, string outputFile);
+void dep(string outputFile);
+void ville(string outputFile);
+void pop(string outputFile);
 
 int get_population(const vector<City> & cities);
 
@@ -58,12 +62,65 @@ int main(int argc, char** argv)
 		else if(isSufix(choice, "single"))
 		{
 			single(argv[2]);
+		} else if(isSufix(choice, "dep"))
+		{
+			dep(argv[2]);
+		} else if(isSufix(choice, "ville"))
+		{
+			ville(argv[2]);
+		} else if(isSufix(choice, "pop"))
+		{
+			pop(argv[2]);
 		}
 	}
 	else { exit(0); }
     return 0;
 }
 
+void pop(string outputFile)
+{
+	
+}
+
+void ville(string outputFile)
+{
+	map<int, unsigned int> colors;
+	vector<City> cities;
+    getCities("communes.csv", cities);
+	
+	predicat get_metropole = isInMetropole();
+	vector<City> * metropole = filter(cities, get_metropole);
+	BoundingBox bb = get_bounding_box(*metropole);
+	
+	drawing draw = draw_all_villes();
+	
+	RGBImage france(1024, 300);
+	draw_village_vector(france, cities, false, draw, bb);
+	france.savePPM(outputFile);
+}
+
+void dep(string outputFile)
+{
+	map<int, unsigned int> colors;
+	vector<City> cities;
+    getCities("communes.csv", cities);
+	
+	predicat get_metropole = isInMetropole();
+	vector<City> * metropole = filter(cities, get_metropole);
+	BoundingBox bb = get_bounding_box(*metropole);
+	
+	for(City city : cities)
+	{
+		string department = city.getINSEE().substr(0, 2);
+		colors[stoi(department)] = rand() % 255;
+	}
+	cout << colors.at(14) << endl;
+	drawing draw = draw_all_deps(colors);
+	
+	RGBImage france(1024, 300);
+	draw_village_vector(france, cities, false, draw, bb);
+	france.savePPM(outputFile);
+}
 
 void france(string outputFile)
 {
@@ -71,7 +128,7 @@ void france(string outputFile)
     getCities("communes.csv", cities);
 	BoundingBox bb = get_bounding_box(cities);
 	RGBImage france(1024, 300);
-	drawing draw = draw_village();
+	drawing draw = draw_village(200, 100, 50);
 	draw_village_vector(france, cities, true, draw, bb);
 	france.savePPM(outputFile);
 }
@@ -85,7 +142,7 @@ void metro(string outputFile)
 	BoundingBox bb = get_bounding_box(*metropole);
 	
 	RGBImage france(1024, 300);
-	drawing draw = draw_village();
+	drawing draw = draw_village(200, 100, 50);
 	draw_village_vector(france, *metropole, true, draw, bb);
 	france.savePPM(outputFile);
 }
@@ -159,7 +216,7 @@ void test_map_functions()
 	cout << pixel.first << " x " << pixel.second << endl;
 	
 	RGBImage img(100, 80);
-	drawing ville = draw_village();
+	drawing ville = draw_village(200, 100, 50);
 	ville(commune->front(), make_pair(100, 100), img, bb);
 	ville(commune->back(), make_pair(100, 100), img, bb);
 	img.savePPM("teste.ppm");
@@ -170,7 +227,7 @@ void test_map_functions()
 	const int width = france.width();
 	const int height = france.height();
 	cout << width << "  " << height << endl;
-	drawing draw = draw_village();
+	drawing draw = draw_village(200, 100, 50);
 	draw_village_vector(france, cities, false, draw, bb2);
 	france.savePPM("villes.ppm");
 }

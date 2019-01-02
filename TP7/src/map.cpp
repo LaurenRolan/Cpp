@@ -4,6 +4,7 @@
 
 #include "map.h"
 #include "City.h"
+#include "string_functions.h"
 
 int height_in_pixels(BoundingBox bb, int w)
 {
@@ -44,12 +45,12 @@ convertion coordinates_to_pixels(BoundingBox bb, pair<int, int> taille)
 	};
 }
 
-drawing draw_village()
+drawing draw_village(unsigned char r, unsigned char g, unsigned char b)
 {
-	return [] (const City & city, pair<int, int> size, RGBImage & img, BoundingBox bb) {
+	return [r, g, b] (const City & city, pair<int, int> size, RGBImage & img, BoundingBox bb) {
 		convertion get_coord = coordinates_to_pixels(bb, size);
 		pair<int, int> coord = get_coord(city.getCoordonnees_GPS());
-		img.drawCircle(coord.first, coord.second, 1, 10, 25, 40);
+		img.drawCircle(coord.first, coord.second, 1, r, g, b);
 	};
 
 }
@@ -61,25 +62,54 @@ drawing draw_circle(unsigned char r, unsigned char g, unsigned char b, int ray)
 		pair<int, int> coord = get_coord(c.getCoordonnees_GPS());
 		img.drawCircle(coord.first, coord.second, ray, r, g, b);
 		img.fillCircle(coord.first, coord.second, ray, r, g, b);
-		cout << "Boo" << endl;
 	};
 }
 
 drawing draw_department(string name)
 {
 	return [name] (const City & c, pair<int, int> p, RGBImage & img, BoundingBox bb) {
-		convertion get_coord = coordinates_to_pixels(bb, p);
-		pair<int, int> coord = get_coord(c.getCoordonnees_GPS());
 		drawing draw;
 		if(name == c.getNom_commune())
 		{
 			draw = draw_circle(50, 100, 200, 5);
 		} else {
-			draw = draw_village();
+			draw = draw_village(200, 100, 50);
 		}
 		draw(c, p, img, bb);
 	};
 }
+
+drawing draw_all_deps( map<int, unsigned int> & colors)
+{
+	return [colors] (const City & c, pair<int, int> p, RGBImage & img, BoundingBox bb) {
+		string department = c.getINSEE().substr(0, 2);
+		int dep = stoi(department);
+		unsigned int color = colors.at(dep);
+		drawing draw = draw_village(color, color % 100, color % 50);
+		draw(c, p, img, bb);
+	};
+}
+
+drawing draw_all_villes()
+{
+	return [] (const City & c, pair<int, int> p, RGBImage & img, BoundingBox bb)
+	{
+		vector<string> nom = split(c.getNom_commune(), " ");
+		
+		//if(isSufix(c.getNom_commune(), "VILLE"))
+		for(auto it = nom.begin(); it != nom.end(); it++)
+		{
+			if(isSufix(*it, "VILLE"))
+			{
+				drawing draw = draw_village(100, 25, 250);
+				draw(c, p, img, bb);
+				break;
+			}
+		}
+	};
+}
+
+
 
 void draw_village_vector(RGBImage & img, const vector<City> & cities, bool tight, drawing draw, BoundingBox bb)
 {
@@ -92,7 +122,7 @@ void draw_village_vector(RGBImage & img, const vector<City> & cities, bool tight
 	int height = height_in_pixels(bb, width);
 	
 	img.resize(width, height);
-	img.fill(100);
+	//img.fill(100);
 	
 	for(City city : cities)
 	{
